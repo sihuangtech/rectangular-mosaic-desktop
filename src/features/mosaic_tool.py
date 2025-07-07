@@ -13,17 +13,9 @@ from PySide6.QtGui import QPixmap, QImage, QPainter, QColor, QPen, QIcon
 from PySide6.QtCore import Qt, QRect, QPoint, QSize
 import os
 from src.features.image_loader import load_image, save_image
-from src.features.image_mosaic import apply_mosaic
 from src.utils.rect_selector import RectSelector
 from src.constants.config import DEFAULT_MOSAIC_BLOCK_SIZE, MIN_MOSAIC_BLOCK_SIZE, MAX_MOSAIC_BLOCK_SIZE
 from src.utils.selectable_label import SelectableLabel
-from src.features.mosaic_template import MosaicTemplate
-from src.features.batch_mosaic import batch_apply_mosaic
-
-# 导入后续将实现的功能模块
-# from src.features.image_loader import load_image, save_image
-# from src.features.image_mosaic import apply_mosaic
-# from src.utils.rect_selector import RectSelector
 
 class MosaicTool(QMainWindow):
     """
@@ -67,13 +59,6 @@ class MosaicTool(QMainWindow):
         self.rect_selector = RectSelector()  # 框选工具
         self.mosaic_rect = None  # 选中的矩形区域 QRect
         self.history: list[QImage] = []  # 历史栈用于撤销
-        # 模板相关
-        self.template = MosaicTemplate()  # 当前模板对象
-        self.template_rects = []         # 当前模板在label上的像素rect列表
-        self.current_rects = []          # 当前手动添加的选区（比例rect）
-        # 模板编辑状态
-        self.is_editing_template = False
-        self.template_status_label = QLabel()
         self.init_ui()
         self.setAcceptDrops(True)  # 允许窗口接受拖拽
 
@@ -94,26 +79,6 @@ class MosaicTool(QMainWindow):
         undo_btn.clicked.connect(self.undo_last)
         undo_btn.setEnabled(False)
         self.undo_btn = undo_btn
-        # 创建模板按钮
-        self.create_tpl_btn = QPushButton("创建模板")
-        self.create_tpl_btn.clicked.connect(self.toggle_template_mode)
-        # 模板相关按钮
-        self.add_rect_btn = QPushButton("添加选区")
-        self.add_rect_btn.clicked.connect(self.add_current_rect)
-        self.clear_rects_btn = QPushButton("清空选区")
-        self.clear_rects_btn.clicked.connect(self.clear_all_rects)
-        self.save_tpl_btn = QPushButton("保存模板")
-        self.save_tpl_btn.clicked.connect(self.save_template)
-        self.load_tpl_btn = QPushButton("加载模板")
-        self.load_tpl_btn.clicked.connect(self.load_template)
-        self.apply_tpl_btn = QPushButton("应用模板")
-        self.apply_tpl_btn.clicked.connect(self.apply_template)
-        # 批量处理按钮
-        self.batch_btn = QPushButton("批量处理")
-        self.batch_btn.clicked.connect(self.batch_process_dialog)
-        # 默认禁用模板相关按钮
-        for b in [self.add_rect_btn, self.clear_rects_btn, self.save_tpl_btn, self.apply_tpl_btn]:
-            b.setEnabled(False)
 
         # 块大小设置 SpinBox
         size_label = QLabel("块大小:")
@@ -138,14 +103,7 @@ class MosaicTool(QMainWindow):
         btn_layout.addWidget(save_btn)
         btn_layout.addWidget(mosaic_btn)
         btn_layout.addWidget(undo_btn)
-        btn_layout.addWidget(self.create_tpl_btn)
-        btn_layout.addWidget(self.template_status_label)
-        btn_layout.addWidget(self.add_rect_btn)
-        btn_layout.addWidget(self.clear_rects_btn)
-        btn_layout.addWidget(self.save_tpl_btn)
-        btn_layout.addWidget(self.load_tpl_btn)
-        btn_layout.addWidget(self.apply_tpl_btn)
-        btn_layout.addWidget(self.batch_btn)
+
         btn_layout.addStretch()
         btn_layout.addWidget(size_label)
         btn_layout.addWidget(size_spin)
@@ -269,12 +227,6 @@ class MosaicTool(QMainWindow):
             pen = QPen(QColor(0, 255, 0), 2, Qt.SolidLine)
             painter.setPen(pen)
             painter.drawRect(self.mosaic_rect)
-        # 绘制所有模板区域
-        if self.template_rects:
-            pen = QPen(QColor(0, 0, 255), 2, Qt.SolidLine)
-            painter.setPen(pen)
-            for rect in self.template_rects:
-                painter.drawRect(rect)
         painter.end()
 
     def get_image_rect_from_widget_rect(self, start: QPoint, end: QPoint):
@@ -415,154 +367,4 @@ class MosaicTool(QMainWindow):
         # 清除选区
         self.mosaic_rect = None
         self.image_label.set_selection(None, False)
-        self.update()
-
-    def toggle_template_mode(self):
-        """
-        切换模板编辑模式。
-        """
-        self.is_editing_template = not self.is_editing_template
-        if self.is_editing_template:
-            self.create_tpl_btn.setText("完成模板编辑")
-            self.template_status_label.setText("模板编辑中…")
-            for b in [self.add_rect_btn, self.clear_rects_btn, self.save_tpl_btn, self.apply_tpl_btn]:
-                b.setEnabled(True)
-        else:
-            self.create_tpl_btn.setText("创建模板")
-            self.template_status_label.setText("")
-            for b in [self.add_rect_btn, self.clear_rects_btn, self.save_tpl_btn, self.apply_tpl_btn]:
-                b.setEnabled(False)
-            # 退出模板编辑时清空高亮
-            self.template_rects.clear()
-            self.image_label.set_selection(None, False)
-            self.update()
-
-    def add_current_rect(self):
-        """
-        添加当前框选区域到模板（以比例方式）。
-        """
-        if not self.is_editing_template:
-            return
-        if self.image is None or self.mosaic_rect is None:
-            return
-        # 计算比例
-        x = self.mosaic_rect.x() / self.image.width()
-        y = self.mosaic_rect.y() / self.image.height()
-        w = self.mosaic_rect.width() / self.image.width()
-        h = self.mosaic_rect.height() / self.image.height()
-        self.template.add_rect(x, y, w, h)
-        self.current_rects.append({'x': x, 'y': y, 'w': w, 'h': h})
-        self.show_template_rects()
-        self.mosaic_rect = None
-        self.image_label.set_selection(None, False)
-        self.update()
-
-    def clear_all_rects(self):
-        """
-        清空所有已添加的选区。
-        """
-        if not self.is_editing_template:
-            return
-        self.template.clear()
-        self.current_rects.clear()
-        self.template_rects.clear()
-        self.image_label.set_selection(None, False)
-        self.update()
-
-    def save_template(self):
-        """
-        保存当前模板到文件。
-        """
-        if not self.is_editing_template:
-            return
-        from PySide6.QtWidgets import QFileDialog
-        file_path, _ = QFileDialog.getSaveFileName(self, "保存模板", "mosaic_template.json", "JSON Files (*.json)")
-        if file_path:
-            self.template.save_to_file(file_path)
-
-    def load_template(self):
-        """
-        从文件加载模板。
-        """
-        from PySide6.QtWidgets import QFileDialog
-        file_path, _ = QFileDialog.getOpenFileName(self, "加载模板", "", "JSON Files (*.json)")
-        if file_path:
-            self.template = MosaicTemplate.load_from_file(file_path)
-            self.current_rects = self.template.rects.copy()
-            self.show_template_rects()
-            self.update()
-
-    def show_template_rects(self):
-        """
-        在label上高亮显示所有模板区域。
-        """
-        if self.image is None:
-            return
-        self.template_rects.clear()
-        w, h = self.image.width(), self.image.height()
-        for r in self.template.rects:
-            x = int(r['x'] * w)
-            y = int(r['y'] * h)
-            rw = int(r['w'] * w)
-            rh = int(r['h'] * h)
-            # 转换为label坐标（缩放+偏移）
-            disp_w = self.display_pixmap.width()
-            disp_h = self.display_pixmap.height()
-            label_rect = self.image_label.geometry()
-            scale_x = disp_w / w
-            scale_y = disp_h / h
-            px = int(x * scale_x)
-            py = int(y * scale_y)
-            pw = int(rw * scale_x)
-            ph = int(rh * scale_y)
-            offset_x = max((label_rect.width() - disp_w) // 2, 0)
-            offset_y = max((label_rect.height() - disp_h) // 2, 0)
-            from PySide6.QtCore import QRect
-            self.template_rects.append(QRect(px + offset_x, py + offset_y, pw, ph))
-        self.image_label.repaint()
-
-    def apply_template(self):
-        """
-        对当前图片应用模板，批量打马赛克。
-        """
-        if not self.is_editing_template:
-            return
-        if self.image is None or not self.template.rects:
-            return
-        from PySide6.QtCore import QRect
-        w, h = self.image.width(), self.image.height()
-        block_size = self.size_spin.value()
-        # 依次应用所有模板区域
-        for r in self.template.get_pixel_rects(w, h):
-            rect = QRect(r['x'], r['y'], r['w'], r['h'])
-            self.image = apply_mosaic(self.image, rect, block_size)
-        self.pixmap = QPixmap.fromImage(self.image)
-        self.update_display_pixmap()
-        self.image_label.setPixmap(self.display_pixmap)
-        self.show_template_rects()
-        self.update()
-
-    def batch_process_dialog(self):
-        """
-        批量处理对话框：选择模板、图片、输出目录，执行批量马赛克。
-        """
-        from PySide6.QtWidgets import QFileDialog, QMessageBox
-        # 选择模板
-        tpl_path, _ = QFileDialog.getOpenFileName(self, "选择模板文件", "", "JSON Files (*.json)")
-        if not tpl_path:
-            return
-        from src.features.mosaic_template import MosaicTemplate
-        template = MosaicTemplate.load_from_file(tpl_path)
-        # 选择图片（多选）
-        img_paths, _ = QFileDialog.getOpenFileNames(self, "选择图片文件（可多选）", "", "Images (*.png *.jpg *.jpeg *.bmp)")
-        if not img_paths:
-            return
-        # 选择输出目录
-        out_dir = QFileDialog.getExistingDirectory(self, "选择输出文件夹")
-        if not out_dir:
-            return
-        # 块大小
-        block_size = self.size_spin.value()
-        # 执行批量处理
-        result = batch_apply_mosaic(img_paths, template, out_dir, block_size)
-        QMessageBox.information(self, "批量处理完成", f"共处理 {len(result)} 张图片，已保存到：\n{out_dir}") 
+        self.update() 
