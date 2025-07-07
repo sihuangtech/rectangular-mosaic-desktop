@@ -27,12 +27,15 @@ def main():
     if current_os == 'Windows':
         print('检测到当前平台：Windows，将打包为 .exe 可执行文件')
         default_icon = 'assets/icons/app.ico'
+        default_name = '图片马赛克工具'
     elif current_os == 'Darwin':
         print('检测到当前平台：Mac OSX，将打包为 .app 可执行文件')
         default_icon = 'assets/icons/app.icns'
+        default_name = '图片马赛克工具'
     elif current_os == 'Linux':
         print('检测到当前平台：Linux，将打包为 ELF 可执行文件')
         default_icon = 'assets/icons/app.png'
+        default_name = '图片马赛克工具'
     else:
         print(f'不支持的操作系统：{current_os}，已退出。')
         return
@@ -44,6 +47,15 @@ def main():
     if os.path.exists(icons_dir):
         sep = ';' if current_os == 'Windows' else ':'
         args += ['--add-data', f'{icons_dir}{sep}{icons_dir}']
+
+    # 自动集成 --name 参数，允许用户自定义
+    use_default_name = ask_yes_no(f"是否使用默认应用名 [{default_name}] (--name)?", default='y')
+    if use_default_name:
+        args += ['--name', default_name]
+    else:
+        custom_name = input("请输入应用名（英文或中文均可）: ").strip()
+        if custom_name:
+            args += ['--name', custom_name]
 
     # 交互式参数选择
     if ask_yes_no("是否打包为单一文件 (--onefile)?"):

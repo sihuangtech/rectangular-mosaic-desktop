@@ -13,6 +13,7 @@ from PySide6.QtGui import QPixmap, QImage, QPainter, QColor, QPen, QIcon
 from PySide6.QtCore import Qt, QRect, QPoint, QSize
 import os
 from src.features.image_loader import load_image, save_image
+from src.features.image_mosaic import apply_mosaic
 from src.utils.rect_selector import RectSelector
 from src.constants.config import DEFAULT_MOSAIC_BLOCK_SIZE, MIN_MOSAIC_BLOCK_SIZE, MAX_MOSAIC_BLOCK_SIZE
 from src.utils.selectable_label import SelectableLabel
