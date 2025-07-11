@@ -64,4 +64,4 @@ README.md              # 项目说明文档
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Snake-Konginchrist/rectangular-mosaic&type=Date)](https://star-history.com/#Snake-Konginchrist/rectangular-mosaic&Date) 
+[![Star History Chart](https://api.star-history.com/svg?repos=Snake-Konginchrist/rectangular-mosaic&type=Date)](https://www.star-history.com/#Snake-Konginchrist/rectangular-mosaic&Date) 
