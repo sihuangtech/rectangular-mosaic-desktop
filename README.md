@@ -62,21 +62,6 @@ README.md              # 项目说明文档
 ## 贡献与反馈
 如有建议或问题，欢迎提交 issue 或 PR。
 
-## 图标资源
+## Star History
 
-应用图标文件请放在 `assets/icons/` 目录下：
-
-- Windows 图标：`app.ico`
-- Mac 图标：`app.icns`
-- Linux/通用图标：`app.png`
-
-主程序会自动加载 `app.ico` 作为窗口图标（如存在）。
-
-### 打包时指定图标
-
-打包为可执行文件时，建议在参数中指定图标路径，例如：
-
-```
-pyinstaller --icon=assets/icons/app.ico ...
-```
-或在交互式打包脚本中输入 `assets/icons/app.ico` 路径。 
+[![Star History Chart](https://api.star-history.com/svg?repos=Snake-Konginchrist/rectangular-mosaic&type=Date)](https://star-history.com/#Snake-Konginchrist/rectangular-mosaic&Date) 
