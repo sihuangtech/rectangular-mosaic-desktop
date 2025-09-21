@@ -15,7 +15,7 @@ import os
 from src.features.image_loader import load_image, save_image
 from src.features.image_mosaic import apply_mosaic
 from src.utils.rect_selector import RectSelector
-from src.constants.config import DEFAULT_MOSAIC_BLOCK_SIZE, MIN_MOSAIC_BLOCK_SIZE, MAX_MOSAIC_BLOCK_SIZE
+from src.constants.config import DEFAULT_MOSAIC_BLOCK_SIZE, MIN_MOSAIC_BLOCK_SIZE, MAX_MOSAIC_BLOCK_SIZE, APP_NAME
 from src.utils.selectable_label import SelectableLabel
 
 class MosaicTool(QMainWindow):
@@ -24,7 +24,7 @@ class MosaicTool(QMainWindow):
     """
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("图片马赛克工具")
+        self.setWindowTitle(APP_NAME)
         # 自动加载应用图标（兼容 PyInstaller 打包和源码运行）
         import sys
         import platform
@@ -368,4 +368,4 @@ class MosaicTool(QMainWindow):
         # 清除选区
         self.mosaic_rect = None
         self.image_label.set_selection(None, False)
-        self.update() 
+        self.update()
