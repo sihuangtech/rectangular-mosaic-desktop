@@ -1,4 +1,4 @@
-# 图片马赛克工具
+# 矩形马赛克桌面版
 
 ## 项目简介
 
@@ -64,4 +64,4 @@ README.md              # 项目说明文档
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Snake-Konginchrist/rectangular-mosaic&type=Date)](https://www.star-history.com/#Snake-Konginchrist/rectangular-mosaic&Date) 
+[![Star History Chart](https://api.star-history.com/svg?repos=sihuangtech/rectangular-mosaic-desktop&type=Date)](https://www.star-history.com/#sihuangtech/rectangular-mosaic-desktop&Date)
