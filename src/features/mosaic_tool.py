@@ -34,15 +34,15 @@ class MosaicTool(QMainWindow):
                 icon_dir = os.path.join(base_dir, 'assets', 'icons')
             else:
                 base_dir = os.path.dirname(__file__)
-                icon_dir = os.path.abspath(os.path.join(base_dir, '../../assets/icons'))
+                icon_dir = os.path.abspath(os.path.join(base_dir, '../../assets'))
             current_os = platform.system()
             icon_candidates = []
             if current_os == 'Windows':
-                icon_candidates = ['app.ico', 'app.png']
+                icon_candidates = ['icon.ico', 'icon.png']
             elif current_os == 'Darwin':
-                icon_candidates = ['app.icns', 'app.png', 'app.ico']
+                icon_candidates = ['icon.icns', 'icon.png', 'icon.ico']
             else:
-                icon_candidates = ['app.png', 'app.ico']
+                icon_candidates = ['icon.png', 'icon.ico']
             for fname in icon_candidates:
                 fpath = os.path.join(icon_dir, fname)
                 if os.path.exists(fpath):

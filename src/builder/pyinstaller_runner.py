@@ -36,11 +36,11 @@ class PyInstallerRunner:
         elif self.config.target_arch == 'arm64':
             self.args += ['--target-arch', 'arm64']
         
-        # 自动集成 assets/icons 资源目录
-        icons_dir = 'assets/icons'
-        if os.path.exists(icons_dir):
+        # 自动集成 assets 资源目录
+        assets_dir = 'assets'
+        if os.path.exists(assets_dir):
             separator = self.config.platform_configs['separator']
-            self.args += ['--add-data', f'{icons_dir}{separator}{icons_dir}']
+            self.args += ['--add-data', f'{assets_dir}{separator}{assets_dir}']
         
         # 设置应用名称（含架构后缀）
         final_name = self.config.get_final_app_name()

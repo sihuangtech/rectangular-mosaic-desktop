@@ -26,19 +26,19 @@ class BuildConfig:
         """获取平台相关配置"""
         configs = {
             'Windows': {
-                'icon': 'assets/icons/app.ico',
+                'icon': 'assets/icon.ico',
                 'separator': ';',
                 'console_flag': '--noconsole',
                 'window_flag': '--noconsole'
             },
             'Darwin': {
-                'icon': 'assets/icons/app.icns',
+                'icon': 'assets/icon.icns',
                 'separator': ':',
                 'console_flag': '--console',
                 'window_flag': '--windowed'
             },
             'Linux': {
-                'icon': 'assets/icons/app.png',
+                'icon': 'assets/icon.png',
                 'separator': ':',
                 'console_flag': '--console',
                 'window_flag': '--windowed'

@@ -46,7 +46,7 @@ Categories=Graphics;
             f.write(desktop_content)
         
         # 复制图标
-        icon_src = "assets/icons/app.png"
+        icon_src = "assets/icon.png"
         if os.path.exists(icon_src):
             shutil.copy2(icon_src, f"{temp_dir}/usr/share/icons/hicolor/256x256/apps/{app_name.lower().replace(' ', '-')}.png")
         
