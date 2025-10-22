@@ -44,3 +44,7 @@ outputs/
 # macOS Xcode项目 - 独立仓库
 macos/
 macos/**
+
+# Next.js Web项目 - 独立仓库
+rectangular-mosaic-web/
+rectangular-mosaic-web/**
