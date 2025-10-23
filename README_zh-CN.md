@@ -105,8 +105,8 @@ README.md              # 项目说明文档
 ## 贡献与反馈
 如有建议或问题，欢迎提交 issue 或 PR。
 
-**加入QQ群参与讨论：** [彩旗开源交流群](https://qm.qq.com/q/fGavz3UxCo)
-**加入Discord服务器：** [彩旗开源社区](https://discord.gg/thWGWq7CwA)
+- **加入QQ群参与讨论：** [彩旗开源交流群](https://qm.qq.com/q/fGavz3UxCo)
+- **加入Discord服务器：** [彩旗开源社区](https://discord.gg/thWGWq7CwA)
 
 ## Star History
 

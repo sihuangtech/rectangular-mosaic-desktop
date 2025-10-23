@@ -105,8 +105,8 @@ README.md              # Project documentation
 ## Contributing and Feedback
 For suggestions or issues, please submit an issue or PR.
 
-**Join our QQ group for discussion:** [SK Open Source Discussion Group](https://qm.qq.com/q/fGavz3UxCo)
-**Join our Discord server:** [SK Open Source Community](https://discord.gg/thWGWq7CwA)
+- **Join our QQ group for discussion:** [SK Open Source Discussion Group](https://qm.qq.com/q/fGavz3UxCo)
+- **Join our Discord server:** [SK Open Source Community](https://discord.gg/thWGWq7CwA)
 
 ## Star History
 
