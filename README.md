@@ -1,66 +1,112 @@
-# 矩形马赛克桌面版
+# Rectangular Mosaic Desktop
 
-## 项目简介
+<p align="center">
+  <strong>English | <a href="./README_zh-CN.md">简体中文</a></strong>
+</p>
 
-本项目是一个基于 PySide6 的图片马赛克工具，支持通过鼠标矩形框选图片区域并一键打马赛克，适合对图片敏感信息进行快速处理。
+<div align="center">
+  <img src="assets/icon.png" alt="Rectangular Mosaic Desktop" width="128" height="128">
+  <h3>Rectangular Mosaic Desktop</h3>
+  <a href="https://apps.apple.com/us/app/rectangular-mosaic-desktop/id6754189038">
+    <img src="https://developer.apple.com/app-store/marketing/guidelines/images/badge-download-on-the-mac-app-store.svg" alt="Download on the Mac App Store">
+  </a>
+</div>
 
-## 主要功能
-- 支持图片上传、显示
-- 鼠标拖拽矩形框选区域
-- 框选区域一键马赛克处理
-- 支持图片保存
-- 界面简洁，操作便捷
+## Project Overview
 
-## 安装与运行
+This project is a PySide6-based image mosaic tool that supports rectangular area selection via mouse drag and one-click mosaic processing, perfect for quickly handling sensitive information in images.
 
-1. 安装依赖
+## Key Features
+- Support for image upload and display
+- Mouse drag rectangular area selection
+- One-click mosaic processing for selected areas
+- Image saving functionality
+- Clean and intuitive interface
+
+## Installation and Running
+
+1. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-2. 运行主程序
+2. Run the main program
 
 ```bash
 python main.py
 ```
 
-## 目录结构
+## Building Executable
+
+### Interactive Build (Recommended)
+
+Use the interactive build script:
+
+```bash
+python build.py
+```
+
+This will guide you through:
+- Target architecture selection
+- Build mode (onedir/onefile) selection  
+- Platform-specific packaging options
+
+### Direct PyInstaller Command
+
+For onedir build (generates folder with multiple files):
+
+```bash
+pyinstaller --onedir --name "RectangularMosaic" --add-data "assets;assets" --icon="assets/icon.ico" --noconsole main.py
+```
+
+For onefile build (generates single executable):
+
+```bash
+pyinstaller --onefile --name "RectangularMosaic" --add-data "assets;assets" --icon="assets/icon.ico" --noconsole main.py
+```
+
+The built executable will be in the `dist/` directory.
+
+## Directory Structure
 
 ```
 /src
   /features
-    mosaic_tool.py      # 主界面与功能入口
-    image_mosaic.py     # 马赛克处理逻辑
-    image_loader.py     # 图片加载与保存
+    mosaic_tool.py      # Main interface and feature entry
+    image_mosaic.py     # Mosaic processing logic
+    image_loader.py     # Image loading and saving
   /utils
-    rect_selector.py    # 框选工具
+    rect_selector.py    # Selection tool
   /constants
-    config.py           # 配置常量
-main.py                # 启动入口
-requirements.txt       # 依赖文件
-.gitignore             # Git 忽略文件
-README.md              # 项目说明文档
+    config.py           # Configuration constants
+main.py                # Startup entry point
+requirements.txt       # Dependencies file
+.gitignore             # Git ignore file
+README.md              # Project documentation
 ```
 
-## 使用说明
+## Usage Instructions
 
-1. 启动程序后，点击"上传图片"选择本地图片。
-2. 在图片上用鼠标拖拽框选需要打马赛克的区域。
-3. 点击"区域马赛克"按钮，对选中区域进行马赛克处理。
-4. 如需保存处理后的图片，点击"保存图片"按钮。
+1. After starting the program, click "Upload Image" to select a local image.
+2. Drag the mouse on the image to select the area that needs mosaic processing.
+3. Click the "Area Mosaic" button to apply mosaic processing to the selected area.
+4. To save the processed image, click the "Save Image" button.
 
-## 开发规范
-- 代码高内聚、低耦合，模块化设计，便于维护和扩展。
-- 每个模块、函数、类均有详细中文注释。
-- 目录结构清晰，便于查找和管理。
+## Development Standards
+- High cohesion and low coupling, modular design for easy maintenance and extension
+- Detailed Chinese comments for each module, function, and class
+- Clear directory structure for easy navigation and management
 
-## 依赖环境
-- Python 3.7 及以上
-- PySide6 6.5.0 及以上
+## Environment Requirements
+- Python 3.7 or higher
+- PySide6 6.5.0 or higher
 
-## 贡献与反馈
-如有建议或问题，欢迎提交 issue 或 PR。
+## Contributing and Feedback
+For suggestions or issues, please submit an issue or PR.
+
+**Join our QQ group for discussion:** [SK Open Source Discussion Group](https://qm.qq.com/q/fGavz3UxCo)
+**Join our Discord server:** [SK Open Source Community](https://discord.gg/thWGWq7CwA)
 
 ## Star History
 

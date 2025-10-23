@@ -10,7 +10,7 @@
 """
 from PySide6.QtWidgets import QMainWindow, QLabel, QPushButton, QFileDialog, QVBoxLayout, QWidget, QHBoxLayout, QSpinBox, QSlider
 from PySide6.QtGui import QPixmap, QImage, QPainter, QColor, QPen, QIcon
-from PySide6.QtCore import Qt, QRect, QPoint, QSize
+from PySide6.QtCore import Qt, QRect, QPoint
 import os
 from src.features.image_loader import load_image, save_image
 from src.features.image_mosaic import apply_mosaic
@@ -29,12 +29,15 @@ class MosaicTool(QMainWindow):
         import sys
         import platform
         def get_icon_path():
-            if hasattr(sys, '_MEIPASS'):
+            if getattr(sys, 'frozen', False):
                 base_dir = sys._MEIPASS
-                icon_dir = os.path.join(base_dir, 'assets', 'icons')
+                icon_dir = os.path.join(base_dir, 'assets')
             else:
-                base_dir = os.path.dirname(__file__)
-                icon_dir = os.path.abspath(os.path.join(base_dir, '../../assets'))
+                if os.path.exists('assets'):
+                    icon_dir = 'assets'
+                else:
+                    base_dir = os.path.dirname(__file__)
+                    icon_dir = os.path.abspath(os.path.join(base_dir, '../../assets'))
             current_os = platform.system()
             icon_candidates = []
             if current_os == 'Windows':
