@@ -7,7 +7,7 @@
 <div align="center">
   <img src="assets/icon.png" alt="Rectangular Mosaic Desktop" width="128" height="128">
   <h3>Rectangular Mosaic Desktop</h3>
-  <a href="https://apps.apple.com/us/app/rectangular-mosaic-desktop/id6754189038">
+  <a href="https://apps.apple.com/us/app/rectangular-mosaic-desktop/id6754189038" target="_blank">
     <img src="https://developer.apple.com/app-store/marketing/guidelines/images/badge-download-on-the-mac-app-store.svg" alt="Download on the Mac App Store">
   </a>
 </div>
