@@ -26,6 +26,14 @@ def load_language_config():
                 return config.get('language', DEFAULT_LANGUAGE)
     except Exception:
         pass
+    
+    # 如果没有保存的配置文件，检测系统语言
+    try:
+        from src.localization.translator import translator
+        return translator.get_system_language()
+    except Exception:
+        pass
+    
     return DEFAULT_LANGUAGE
 
 def save_language_config(language_code):

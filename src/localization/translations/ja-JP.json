@@ -37,6 +37,7 @@
   "tools": "ツール",
   "window": "ウィンドウ",
   "ready": "準備完了",
+  "no_image_to_save": "保存する画像がありません",
   "image_saved_successfully": "画像が正常に保存されました",
   "theme": "テーマ",
   "theme_settings": "テーマ設定",

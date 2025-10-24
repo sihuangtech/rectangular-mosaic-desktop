@@ -37,6 +37,7 @@
   "tools": "도구",
   "window": "창",
   "ready": "준비",
+  "no_image_to_save": "저장할 이미지가 없습니다",
   "image_saved_successfully": "이미지가 성공적으로 저장되었습니다",
   "theme": "테마",
   "theme_settings": "테마 설정",

@@ -199,6 +199,9 @@ class ControlPanel(QWidget):
         self.open_btn.setText(tr("open_image", "Open Image"))
         self.save_btn.setText(tr("save_image", "Save Image"))
         
+        # 清除图像按钮 - 添加缺失的重新翻译
+        self.clear_image_btn.setText(tr("clear_image", "Clear Image"))
+        
         # 编辑操作组
         edit_group = self.findChild(QGroupBox, "edit_group")
         if edit_group:

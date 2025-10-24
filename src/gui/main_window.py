@@ -369,6 +369,9 @@ class MainWindow(QMainWindow):
     def change_language(self, language_code):
         """切换语言 - 使用Translator类"""
         if set_language(language_code):
+            # 保存语言配置
+            from main import save_language_config
+            save_language_config(language_code)
             # 重新翻译UI
             self.retranslate_ui()
     

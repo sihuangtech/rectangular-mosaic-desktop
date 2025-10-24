@@ -24,16 +24,16 @@ APP_BUILD_NUMBER = "1"
 MAC_PACKAGE_NAME = "cn.skstudio.rectmosaic.mac"
 
 # 本地化配置
-DEFAULT_LANGUAGE = 'en_US'  # 默认语言
+DEFAULT_LANGUAGE = 'en-US'  # 默认语言
 SUPPORTED_LANGUAGES = [
-    'zh_CN',  # 简体中文
-    'en_US',  # English
-    'ja_JP',  # 日本語
-    'ko_KR',  # 한국어
-    'fr_FR',  # Français
-    'de_DE',  # Deutsch
-    'es_ES',  # Español
-    'ru_RU'   # Русский
+    'zh-CN',  # 简体中文
+    'en-US',  # English
+    'ja-JP',  # 日本語
+    'ko-KR',  # 한국어
+    'fr-FR',  # Français
+    'de-DE',  # Deutsch
+    'es-ES',  # Español
+    'ru-RU'   # Русский
 ]
 
 # 语言配置文件路径
