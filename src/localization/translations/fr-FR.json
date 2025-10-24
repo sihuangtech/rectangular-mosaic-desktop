@@ -4,8 +4,9 @@
   "open_image": "Ouvrir l'Image",
   "save_image": "Enregistrer l'Image",
   "undo": "Annuler",
-  "redo": "Refaire",
-  "clear": "Effacer",
+  "redo": "Répéter",
+  "clear": "Effacer la Sélection",
+  "clear_image": "Effacer l'Image",
   "apply_mosaic": "Appliquer Mosaïque",
   "block_size": "Taille de Bloc",
   "intensity": "Intensité",
@@ -43,5 +44,13 @@
   "theme_system": "Suivre le Système",
   "theme_light": "Clair",
   "theme_dark": "Sombre",
-  "version": "Version"
+  "version": "Version",
+  "ok": "OK",
+  "cancel": "Annuler",
+  "image_loaded": "Image chargée - Annuler/Répéter disponible",
+  "image_loaded_undo": "Image chargée - Annuler disponible",
+  "image_loaded_redo": "Image chargée - Répéter disponible",
+  "image_loaded_only": "Image chargée",
+  "image_cleared": "Image effacée",
+  "block_size_changed": "Taille de bloc changée à {}"
 }

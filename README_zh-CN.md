@@ -20,6 +20,7 @@
 - 支持图片上传、显示
 - 鼠标拖拽矩形框选区域
 - 框选区域一键马赛克处理
+- 清除图像功能，重置历史记录
 - 支持图片保存
 - 界面简洁，操作便捷
 
@@ -73,11 +74,25 @@ pyinstaller --onefile --name "RectangularMosaic" --add-data "assets;assets" --ic
 ```
 /src
   /features
-    mosaic_tool.py      # 主界面与功能入口
-    image_mosaic.py     # 马赛克处理逻辑
+    edit_history.py     # 编辑历史管理
+    file_manager.py     # 文件操作
     image_loader.py     # 图片加载与保存
+    image_mosaic.py     # 马赛克处理逻辑
+  /gui
+    about_dialog.py     # 关于对话框
+    image_viewer.py     # 图像显示组件
+    main_window.py      # 主应用程序窗口
+    menu_bar.py         # 应用程序菜单栏
+    status_bar.py       # 状态栏组件
+    theme_manager.py    # UI主题管理
+    ui_components.py    # UI组件
+    ui_state_manager.py # UI状态管理
+  /localization
+    translations/       # 多语言翻译文件
+    translator.py       # 翻译管理
   /utils
     rect_selector.py    # 框选工具
+    selectable_label.py # 可选标签组件
   /constants
     config.py           # 配置常量
 main.py                # 启动入口
@@ -91,7 +106,8 @@ README.md              # 项目说明文档
 1. 启动程序后，点击"上传图片"选择本地图片。
 2. 在图片上用鼠标拖拽框选需要打马赛克的区域。
 3. 点击"应用马赛克"按钮，对选中区域进行马赛克处理。
-4. 如需保存处理后的图片，点击"保存图片"按钮。
+4. 如需清除当前图像并重置所有历史记录，点击"清除图像"按钮。
+5. 如需保存处理后的图片，点击"保存图片"按钮。
 
 ## 开发规范
 - 代码高内聚、低耦合，模块化设计，便于维护和扩展。

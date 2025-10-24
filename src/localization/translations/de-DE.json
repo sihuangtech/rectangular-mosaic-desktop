@@ -4,8 +4,9 @@
   "open_image": "Bild Öffnen",
   "save_image": "Bild Speichern",
   "undo": "Rückgängig",
-  "redo": "Wiederholen",
-  "clear": "Löschen",
+  "redo": "Wiederherstellen",
+  "clear": "Auswahl Löschen",
+  "clear_image": "Bild Löschen",
   "apply_mosaic": "Mosaik Anwenden",
   "block_size": "Blockgröße",
   "intensity": "Intensität",
@@ -43,5 +44,13 @@
   "theme_system": "System folgen",
   "theme_light": "Hell",
   "theme_dark": "Dunkel",
-  "version": "Version"
+  "version": "Version",
+  "ok": "OK",
+  "cancel": "Abbrechen",
+  "image_loaded": "Bild geladen - Rückgängig/Wiederherstellen verfügbar",
+  "image_loaded_undo": "Bild geladen - Rückgängig verfügbar",
+  "image_loaded_redo": "Bild geladen - Wiederherstellen verfügbar",
+  "image_loaded_only": "Bild geladen",
+  "image_cleared": "Bild gelöscht",
+  "block_size_changed": "Blockgröße geändert zu {}"
 }

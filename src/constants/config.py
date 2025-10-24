@@ -15,15 +15,16 @@ MIN_MOSAIC_BLOCK_SIZE = 2
 MAX_MOSAIC_BLOCK_SIZE = 100 
 
 # 应用元数据
-APP_NAME = "矩形马赛克"
-ORGANIZATION_NAME = "彩旗工作室"
+APP_NAME = "Rectangular Mosaic"
+ORGANIZATION_NAME = "SK Studio"
 APP_VERSION = "0.1.0"
+APP_BUILD_NUMBER = "1"
 
 # Mac平台专用包名（Bundle Identifier）
 MAC_PACKAGE_NAME = "cn.skstudio.rectmosaic.mac"
 
 # 本地化配置
-DEFAULT_LANGUAGE = 'zh_CN'  # 默认语言
+DEFAULT_LANGUAGE = 'en_US'  # 默认语言
 SUPPORTED_LANGUAGES = [
     'zh_CN',  # 简体中文
     'en_US',  # English
@@ -73,6 +74,3 @@ SELECTION_BORDER_WIDTH = 2  # 选择边框宽度
 # UI布局配置
 UI_LAYOUT_SPACING = 10  # UI布局间距
 UI_LAYOUT_MARGIN = 0  # UI布局边距
-
-# 应用信息配置
-APP_VERSION_DISPLAY = "1.0.0"  # 应用显示版本号

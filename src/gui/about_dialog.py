@@ -3,10 +3,10 @@
 关于对话框模块 - 显示应用程序信息
 """
 from PySide6.QtWidgets import QDialog, QVBoxLayout, QHBoxLayout, QLabel, QPushButton
-from PySide6.QtCore import Qt, QUrl
-from PySide6.QtGui import QPixmap, QIcon, QDesktopServices
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QPixmap
 from src.localization import tr
-from src.constants.config import APP_VERSION_DISPLAY
+from src.constants.config import APP_VERSION, APP_BUILD_NUMBER, ORGANIZATION_NAME, APP_NAME
 import os
 
 
@@ -59,7 +59,7 @@ class AboutDialog(QDialog):
         content_layout.setSpacing(4)  # 内容项之间的紧凑间距
         
         # 应用名称 - macOS风格字体
-        app_name_label = QLabel(tr('app_name', 'Rectangular Mosaic'))
+        app_name_label = QLabel(APP_NAME)
         app_name_label.setStyleSheet("""
             font-size: 13px;
             font-weight: 600;
@@ -68,20 +68,40 @@ class AboutDialog(QDialog):
         content_layout.addWidget(app_name_label)
         
         # 版本信息 - 包含构建版本
-        version_label = QLabel(f"{tr('version', 'Version')} {APP_VERSION_DISPLAY}(1)")  # 简化构建版本
+        version_label = QLabel(f"Version {APP_VERSION}({APP_BUILD_NUMBER})")
         version_label.setStyleSheet("""
             font-size: 11px;
             color: #666666;
         """)
         content_layout.addWidget(version_label)
         
-        # 社交媒体链接 - 简单垂直显示网址
-        content_layout.addWidget(QLabel("https://www.sihuangtech.com"))
-        content_layout.addWidget(QLabel("mailto:developer@skstudio.cn"))
-        content_layout.addWidget(QLabel("https://github.com/sihuangtech"))
+        # 超链接区域 - 横向排列
+        links_layout = QHBoxLayout()
+        links_layout.setSpacing(8)  # 链接之间的间距
+        
+        # Website链接
+        website_label = QLabel('<a href="https://www.sihuangtech.com">Website</a>')
+        website_label.setOpenExternalLinks(True)
+        website_label.setStyleSheet("font-size: 11px; color: #0066cc; text-decoration: none;")
+        links_layout.addWidget(website_label)
+        
+        # Email链接
+        email_label = QLabel('<a href="mailto:developer@skstudio.cn">Email</a>')
+        email_label.setOpenExternalLinks(True)
+        email_label.setStyleSheet("font-size: 11px; color: #0066cc; text-decoration: none;")
+        links_layout.addWidget(email_label)
+        
+        # GitHub链接
+        github_label = QLabel('<a href="https://github.com/sihuangtech">GitHub</a>')
+        github_label.setOpenExternalLinks(True)
+        github_label.setStyleSheet("font-size: 11px; color: #0066cc; text-decoration: none;")
+        links_layout.addWidget(github_label)
+        
+        links_layout.addStretch()  # 右侧填充
+        content_layout.addLayout(links_layout)
         
         # 版权信息 - macOS风格
-        copyright_label = QLabel('Copyright © 2025 SK Studio')
+        copyright_label = QLabel(f'Copyright © 2025 {ORGANIZATION_NAME}')
         copyright_label.setStyleSheet("""
             font-size: 9px;
             color: #666666;

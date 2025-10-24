@@ -20,6 +20,7 @@ This project is a PySide6-based image mosaic tool that supports rectangular area
 - Support for image upload and display
 - Mouse drag rectangular area selection
 - One-click mosaic processing for selected areas
+- Clear image functionality with history reset
 - Image saving functionality
 - Clean and intuitive interface
 
@@ -73,11 +74,25 @@ The built executable will be in the `dist/` directory.
 ```
 /src
   /features
-    mosaic_tool.py      # Main interface and feature entry
-    image_mosaic.py     # Mosaic processing logic
+    edit_history.py     # Edit history management
+    file_manager.py     # File operations
     image_loader.py     # Image loading and saving
+    image_mosaic.py     # Mosaic processing logic
+  /gui
+    about_dialog.py     # About dialog
+    image_viewer.py     # Image display component
+    main_window.py      # Main application window
+    menu_bar.py         # Application menu bar
+    status_bar.py       # Status bar component
+    theme_manager.py    # UI theme management
+    ui_components.py    # UI components
+    ui_state_manager.py # UI state management
+  /localization
+    translations/       # Multi-language translation files
+    translator.py       # Translation management
   /utils
     rect_selector.py    # Selection tool
+    selectable_label.py # Selectable label component
   /constants
     config.py           # Configuration constants
 main.py                # Startup entry point
@@ -91,7 +106,8 @@ README.md              # Project documentation
 1. After starting the program, click "Upload Image" to select a local image.
 2. Drag the mouse on the image to select the area that needs mosaic processing.
 3. Click the "Apply Mosaic" button to apply mosaic processing to the selected area.
-4. To save the processed image, click the "Save Image" button.
+4. To clear the current image and reset all history, click the "Clear Image" button.
+5. To save the processed image, click the "Save Image" button.
 
 ## Development Standards
 - High cohesion and low coupling, modular design for easy maintenance and extension

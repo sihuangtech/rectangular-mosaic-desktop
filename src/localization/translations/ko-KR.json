@@ -4,8 +4,9 @@
   "open_image": "이미지 열기",
   "save_image": "이미지 저장",
   "undo": "실행 취소",
-  "redo": "다시 실행",
-  "clear": "지우기",
+  "redo": "반복",
+  "clear": "선택 영역 지우기",
+  "clear_image": "이미지 지우기",
   "apply_mosaic": "모자이크 적용",
   "block_size": "블록 크기",
   "intensity": "강도",
@@ -43,5 +44,13 @@
   "theme_system": "시스템 따라가기",
   "theme_light": "라이트",
   "theme_dark": "다크",
-  "version": "버전"
+  "version": "버전",
+  "ok": "OK",
+  "cancel": "취소",
+  "image_loaded": "이미지가 로드되었습니다 - 실행 취소/반복 가능",
+  "image_loaded_undo": "이미지가 로드되었습니다 - 실행 취소 가능",
+  "image_loaded_redo": "이미지가 로드되었습니다 - 반복 가능",
+  "image_loaded_only": "이미지가 로드되었습니다",
+  "image_cleared": "이미지가 지워졌습니다",
+  "block_size_changed": "블록 크기가 {}로 변경되었습니다"
 }

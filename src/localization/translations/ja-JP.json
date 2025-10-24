@@ -4,8 +4,9 @@
   "open_image": "画像を開く",
   "save_image": "画像を保存",
   "undo": "元に戻す",
-  "redo": "やり直し",
-  "clear": "クリア",
+  "redo": "繰り返し",
+  "clear": "選択範囲をクリア",
+  "clear_image": "画像をクリア",
   "apply_mosaic": "モザイクを適用",
   "block_size": "ブロックサイズ",
   "intensity": "強度",
@@ -43,5 +44,13 @@
   "theme_system": "システムに従う",
   "theme_light": "ライト",
   "theme_dark": "ダーク",
-  "version": "バージョン"
+  "version": "バージョン",
+  "ok": "OK",
+  "cancel": "キャンセル",
+  "image_loaded": "画像が読み込まれました - 元に戻す/繰り返しが利用可能",
+  "image_loaded_undo": "画像が読み込まれました - 元に戻すが利用可能",
+  "image_loaded_redo": "画像が読み込まれました - 繰り返しが利用可能",
+  "image_loaded_only": "画像が読み込まれました",
+  "image_cleared": "画像がクリアされました",
+  "block_size_changed": "ブロックサイズが {} に変更されました"
 }

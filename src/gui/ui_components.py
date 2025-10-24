@@ -3,7 +3,7 @@
 UI组件模块 - 包含MosaicTool的用户界面组件
 """
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton, 
-                                QSpinBox, QSlider, QLabel, QGroupBox, QComboBox)
+                                QSpinBox, QSlider, QLabel, QGroupBox, QComboBox, QDoubleSpinBox)
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QIcon
 from src.localization import tr
@@ -23,6 +23,7 @@ class ControlPanel(QWidget):
     undo_clicked = Signal()
     redo_clicked = Signal()
     clear_clicked = Signal()
+    clear_image_clicked = Signal()
     apply_mosaic_clicked = Signal()
     block_size_changed = Signal(int)
     intensity_changed = Signal(int)
@@ -58,6 +59,7 @@ class ControlPanel(QWidget):
     def create_file_group(self):
         """创建文件操作组"""
         group = QGroupBox(tr("file", "File"))
+        group.setObjectName("file_group")  # 添加对象名称
         layout = QVBoxLayout()
         
         # 打开图片按钮
@@ -71,12 +73,19 @@ class ControlPanel(QWidget):
         self.save_btn.setEnabled(False)
         layout.addWidget(self.save_btn)
         
+        # 清除图像按钮
+        self.clear_image_btn = QPushButton(tr("clear_image", "Clear Image"))
+        self.clear_image_btn.clicked.connect(self.clear_image_clicked.emit)
+        self.clear_image_btn.setEnabled(False)
+        layout.addWidget(self.clear_image_btn)
+        
         group.setLayout(layout)
         return group
     
     def create_edit_group(self):
         """创建编辑操作组"""
         group = QGroupBox(tr("edit", "Edit"))
+        group.setObjectName("edit_group")  # 添加对象名称
         layout = QVBoxLayout()
         
         # 应用马赛克按钮
@@ -109,6 +118,7 @@ class ControlPanel(QWidget):
     def create_params_group(self):
         """创建参数控制组"""
         group = QGroupBox(tr("settings", "Settings"))
+        group.setObjectName("params_group")  # 添加对象名称
         layout = QVBoxLayout()
         
         # 块大小控制
@@ -168,15 +178,48 @@ class ControlPanel(QWidget):
         self.undo_btn.setEnabled(can_undo)
         self.redo_btn.setEnabled(can_redo)
         self.clear_btn.setEnabled(has_image)
+        self.clear_image_btn.setEnabled(has_image)
         self.apply_mosaic_btn.setEnabled(has_image and has_selection)
     
     def get_block_size(self):
         """获取块大小"""
         return self.block_size_spin.value()
-    
+
     def get_intensity(self):
         """获取强度值"""
         return self.intensity_spin.value()
+
+    def retranslate_ui(self):
+        """重新翻译UI文本"""
+        # 文件操作组
+        file_group = self.findChild(QGroupBox, "file_group")
+        if file_group:
+            file_group.setTitle(tr("file", "File"))
+        
+        self.open_btn.setText(tr("open_image", "Open Image"))
+        self.save_btn.setText(tr("save_image", "Save Image"))
+        
+        # 编辑操作组
+        edit_group = self.findChild(QGroupBox, "edit_group")
+        if edit_group:
+            edit_group.setTitle(tr("edit", "Edit"))
+        
+        self.apply_mosaic_btn.setText(tr("apply_mosaic", "Apply Mosaic"))
+        self.undo_btn.setText(tr("undo", "Undo"))
+        self.redo_btn.setText(tr("redo", "Redo"))
+        self.clear_btn.setText(tr("clear", "Clear"))
+        
+        # 参数控制组
+        params_group = self.findChild(QGroupBox, "params_group")
+        if params_group:
+            params_group.setTitle(tr("settings", "Settings"))
+            
+            # 查找块大小和强度标签
+            for child in params_group.findChildren(QLabel):
+                if child.text() and ("Block" in child.text() or "块" in child.text()):
+                    child.setText(tr("block_size", "Block Size"))
+                elif child.text() and ("Intensity" in child.text() or "强度" in child.text()):
+                    child.setText(tr("intensity", "Intensity"))
 
 
 class LanguageSelector(QWidget):

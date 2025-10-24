@@ -4,8 +4,9 @@
   "open_image": "Open Image",
   "save_image": "Save Image",
   "undo": "Undo",
-  "redo": "Redo",
-  "clear": "Clear",
+  "redo": "Restore",
+  "clear": "Clear Selection",
+  "clear_image": "Clear Image",
   "apply_mosaic": "Apply Mosaic",
   "block_size": "Block Size",
   "intensity": "Intensity",
@@ -46,5 +47,11 @@
   "theme_dark": "Dark",
   "version": "Version",
   "ok": "OK",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "image_loaded": "Image loaded - Undo/Restore available",
+  "image_loaded_undo": "Image loaded - Undo available",
+  "image_loaded_redo": "Image loaded - Restore available",
+  "image_loaded_only": "Image loaded",
+  "image_cleared": "Image cleared",
+  "block_size_changed": "Block size changed to {}"
 }

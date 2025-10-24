@@ -4,8 +4,9 @@
   "open_image": "打开图片",
   "save_image": "保存图片",
   "undo": "撤销",
-  "redo": "重做",
-  "clear": "清除",
+  "redo": "恢复",
+  "clear": "清除选择区域",
+  "clear_image": "清除图像",
   "apply_mosaic": "应用马赛克",
   "block_size": "块大小",
   "intensity": "强度",
@@ -46,5 +47,11 @@
   "theme_dark": "深色",
   "version": "版本",
   "ok": "确定",
-  "cancel": "取消"
+  "cancel": "取消",
+  "image_loaded": "图片已加载 - 可撤销/恢复",
+  "image_loaded_undo": "图片已加载 - 可撤销",
+  "image_loaded_redo": "图片已加载 - 可恢复",
+  "image_loaded_only": "图片已加载",
+  "image_cleared": "图像已清除",
+  "block_size_changed": "块大小更改为 {}"
 }

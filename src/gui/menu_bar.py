@@ -42,6 +42,16 @@ class AppMenuBar(QMenuBar):
         # 帮助菜单
         self.create_help_menu()
     
+    def retranslate_ui(self):
+        """重新翻译UI文本"""
+        # 重新翻译所有菜单
+        self.clear()
+        self.init_menus()
+        
+        # 重新填充语言菜单（需要重新设置当前语言）
+        from src.localization import get_current_language, get_available_languages
+        self.populate_language_menu(get_available_languages(), get_current_language())
+    
     def create_file_menu(self):
         """创建文件菜单"""
         file_menu = self.addMenu(tr("file", "File"))

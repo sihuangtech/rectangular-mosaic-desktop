@@ -4,7 +4,7 @@
 """
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QScrollArea, QMessageBox
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtGui import QPixmap, QImage
+from PySide6.QtGui import QPixmap
 from src.utils.selectable_label import SelectableLabel
 from src.localization import tr
 from src.features.image_loader import load_image
@@ -77,19 +77,77 @@ class ImageViewer(QWidget):
             return False
     
     def display_image(self, image):
-        """在标签中显示图像"""
+        """在标签中显示图像，根据窗口大小自动缩放"""
         if image and not image.isNull():
+            # 获取标签的当前尺寸
+            label_size = self.image_label.size()
+            
+            # 如果标签还没有尺寸，使用最小尺寸
+            if label_size.width() <= 1 or label_size.height() <= 1:
+                label_size.setWidth(IMAGE_VIEWER_MIN_WIDTH)
+                label_size.setHeight(IMAGE_VIEWER_MIN_HEIGHT)
+            
+            # 将图像缩放到适合标签的大小，保持纵横比
             pixmap = QPixmap.fromImage(image)
-            self.image_label.setPixmap(pixmap)
+            scaled_pixmap = pixmap.scaled(
+                label_size,
+                Qt.KeepAspectRatio,
+                Qt.SmoothTransformation
+            )
+            self.image_label.setPixmap(scaled_pixmap)
             self.image_label.adjustSize()
     
     def get_selection_rect(self):
-        """获取选择区域"""
-        return self.image_label.get_selection_rect()
+        """获取选择区域 - 转换为原始图像坐标"""
+        display_rect = self.image_label.get_selection_rect()
+        if not display_rect or display_rect.isNull():
+            return display_rect
+        
+        # 获取显示的图片尺寸
+        pixmap = self.image_label.pixmap()
+        if not pixmap or pixmap.isNull():
+            return display_rect
+        
+        # 获取原始图像尺寸
+        if not self.has_image():
+            return display_rect
+        
+        original_width = self.current_image.width()
+        original_height = self.current_image.height()
+        display_width = pixmap.width()
+        display_height = pixmap.height()
+        
+        # 计算缩放比例
+        scale_x = original_width / display_width
+        scale_y = original_height / display_height
+        
+        # 转换坐标到原始图像（display_rect已经是图片相对坐标）
+        from PySide6.QtCore import QRect
+        original_rect = QRect(
+            int(display_rect.x() * scale_x),
+            int(display_rect.y() * scale_y),
+            int(display_rect.width() * scale_x),
+            int(display_rect.height() * scale_y)
+        )
+        
+        return original_rect
     
     def clear_selection(self):
         """清除选择区域"""
         self.image_label.clear_selection()
+    
+    def clear_image(self):
+        """清除图像"""
+        # 清除当前图像
+        self.current_image = None
+        self.original_image = None
+        self.image_path = None
+        
+        # 清除标签中的图像
+        self.image_label.clear()
+        
+        # 清除选择区域
+        self.clear_selection()
     
     def has_image(self):
         """检查是否有图像加载"""
@@ -118,3 +176,10 @@ class ImageViewer(QWidget):
         if self.has_image():
             return self.current_image.width(), self.current_image.height()
         return 0, 0
+    
+    def resizeEvent(self, event):
+        """窗口大小改变时重新调整图片大小"""
+        super().resizeEvent(event)
+        # 如果有图片，重新显示以适应新的大小
+        if self.has_image() and self.current_image:
+            self.display_image(self.current_image)

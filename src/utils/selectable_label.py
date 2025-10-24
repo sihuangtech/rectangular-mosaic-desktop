@@ -54,7 +54,18 @@ class SelectableLabel(QLabel):
             pen_style = Qt.DashLine if self.is_selecting else Qt.SolidLine
             pen = QPen(QColor(*SELECTION_BORDER_COLOR), SELECTION_BORDER_WIDTH, pen_style)
             painter.setPen(pen)
-            painter.drawRect(self.selection_rect)
+            
+            # 将图片相对坐标转换为标签控件坐标进行绘制
+            image_display_rect = self.get_image_display_rect()
+            if not image_display_rect.isNull():
+                # 计算偏移量
+                offset_x = image_display_rect.x()
+                offset_y = image_display_rect.y()
+                
+                # 创建绘制矩形（相对于标签控件）
+                draw_rect = self.selection_rect.translated(offset_x, offset_y)
+                painter.drawRect(draw_rect)
+            
             painter.end()
 
     def mousePressEvent(self, event: QMouseEvent):
@@ -62,19 +73,25 @@ class SelectableLabel(QLabel):
         鼠标按下事件：开始框选。
         """
         if event.button() == Qt.LeftButton:
-            self.start_point = event.pos()
-            self.is_selecting = True
-            self.set_selection(QRect(self.start_point, self.start_point), True)
-            self.selection_changed.emit(self.selection_rect)
+            # 获取相对于图片实际显示区域的坐标
+            image_pos = self.get_image_relative_pos(event.pos())
+            if image_pos:
+                self.start_point = image_pos
+                self.is_selecting = True
+                self.set_selection(QRect(self.start_point, self.start_point), True)
+                self.selection_changed.emit(self.selection_rect)
 
     def mouseMoveEvent(self, event: QMouseEvent):
         """
         鼠标移动事件：更新框选区域。
         """
         if self.is_selecting and hasattr(self, 'start_point'):
-            current_rect = QRect(self.start_point, event.pos())
-            self.set_selection(current_rect, True)
-            self.selection_changed.emit(self.selection_rect)
+            # 获取相对于图片实际显示区域的坐标
+            image_pos = self.get_image_relative_pos(event.pos())
+            if image_pos:
+                current_rect = QRect(self.start_point, image_pos)
+                self.set_selection(current_rect, True)
+                self.selection_changed.emit(self.selection_rect)
 
     def mouseReleaseEvent(self, event: QMouseEvent):
         """
@@ -100,3 +117,59 @@ class SelectableLabel(QLabel):
         """
         self.set_selection(None, False)
         self.selection_changed.emit(QRect())
+
+    def get_image_relative_pos(self, pos):
+        """
+        将标签控件坐标转换为图片相对坐标
+        参数：
+            pos (QPoint): 标签控件中的坐标
+        返回：
+            QPoint: 图片相对坐标，如果不在图片区域内返回None
+        """
+        pixmap = self.pixmap()
+        if not pixmap or pixmap.isNull():
+            return None
+        
+        # 获取标签和图片的尺寸
+        label_size = self.size()
+        pixmap_size = pixmap.size()
+        
+        # 计算图片在标签中的实际显示区域（考虑居中显示）
+        scale_mode = Qt.KeepAspectRatio
+        scaled_size = pixmap_size.scaled(label_size, scale_mode)
+        
+        # 计算居中偏移
+        offset_x = (label_size.width() - scaled_size.width()) // 2
+        offset_y = (label_size.height() - scaled_size.height()) // 2
+        
+        # 转换为相对于图片的坐标
+        relative_x = pos.x() - offset_x
+        relative_y = pos.y() - offset_y
+        
+        # 检查是否在图片区域内
+        if relative_x < 0 or relative_y < 0 or relative_x >= scaled_size.width() or relative_y >= scaled_size.height():
+            return None
+            
+        return QPoint(relative_x, relative_y)
+    
+    def get_image_display_rect(self):
+        """
+        获取图片在标签中的实际显示区域
+        返回：
+            QRect: 图片显示区域，如果没有图片返回空矩形
+        """
+        pixmap = self.pixmap()
+        if not pixmap or pixmap.isNull():
+            return QRect()
+        
+        label_size = self.size()
+        pixmap_size = pixmap.size()
+        
+        # 计算图片在标签中的实际显示区域
+        scaled_size = pixmap_size.scaled(label_size, Qt.KeepAspectRatio)
+        
+        # 计算居中偏移
+        offset_x = (label_size.width() - scaled_size.width()) // 2
+        offset_y = (label_size.height() - scaled_size.height()) // 2
+        
+        return QRect(offset_x, offset_y, scaled_size.width(), scaled_size.height())
