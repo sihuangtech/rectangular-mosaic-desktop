@@ -2,9 +2,9 @@
 """
 菜单栏组件模块 - 包含应用程序的菜单栏
 """
-from PySide6.QtWidgets import QMenuBar, QAction, QMessageBox
+from PySide6.QtWidgets import QMenuBar, QMessageBox
 from PySide6.QtCore import Signal
-from PySide6.QtGui import QKeySequence
+from PySide6.QtGui import QKeySequence, QAction
 from src.localization import tr
 
 

@@ -9,6 +9,6 @@ Localization module for Rectangular Mosaic Desktop
     被主程序和各模块导入使用，实现界面国际化。
 """
 
-from .translator import Translator, get_available_languages, set_language, get_current_language, tr
+from .translator import Translator, get_available_languages, set_language, get_current_language, tr, LANGUAGES
 
-__all__ = ['Translator', 'get_available_languages', 'set_language', 'get_current_language', 'tr']
+__all__ = ['Translator', 'get_available_languages', 'set_language', 'get_current_language', 'tr', 'LANGUAGES']

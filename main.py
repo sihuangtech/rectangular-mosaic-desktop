@@ -13,7 +13,6 @@ import json
 import os
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QCoreApplication
-# 导入主界面类和配置
 from src.gui.main_window import MainWindow
 from src.constants.config import APP_NAME, ORGANIZATION_NAME, APP_VERSION, DEFAULT_LANGUAGE, LANGUAGE_CONFIG_FILE
 from src.localization import set_language, tr

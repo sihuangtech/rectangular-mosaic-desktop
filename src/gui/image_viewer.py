@@ -7,6 +7,7 @@ from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QPixmap, QImage
 from src.utils.selectable_label import SelectableLabel
 from src.localization import tr
+from src.features.image_loader import load_image
 from src.constants.config import (
     IMAGE_VIEWER_MIN_WIDTH, IMAGE_VIEWER_MIN_HEIGHT, IMAGE_VIEWER_BACKGROUND_COLOR, IMAGE_VIEWER_BORDER_STYLE
 )

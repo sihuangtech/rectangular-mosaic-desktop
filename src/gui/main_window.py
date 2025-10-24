@@ -14,8 +14,8 @@ from src.gui.ui_components import ControlPanel
 from src.gui.menu_bar import AppMenuBar
 from src.gui.status_bar import AppStatusBar
 from src.gui.image_viewer import ImageViewer
-from src.features.file_manager import FileManager
 from src.gui.ui_state_manager import UIStateManager
+from src.features.file_manager import FileManager
 from src.features.edit_history import EditHistory
 from src.constants.config import (
     MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT, MAIN_WINDOW_MIN_WIDTH, MAIN_WINDOW_MIN_HEIGHT,
