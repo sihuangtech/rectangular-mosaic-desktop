@@ -1,11 +1,12 @@
 {
-  "app_name": "Rechteckiges Mosaik-Werkzeug",
+  "app_name": "Rechteckiges Mosaik",
   "organization_name": "Rechteckiges Mosaik Desktop",
   "open_image": "Bild Öffnen",
   "save_image": "Bild Speichern",
   "undo": "Rückgängig",
   "redo": "Wiederholen",
   "clear": "Löschen",
+  "apply_mosaic": "Mosaik Anwenden",
   "block_size": "Blockgröße",
   "intensity": "Intensität",
   "image_files": "Bilddateien",
@@ -17,6 +18,8 @@
   "success": "Erfolg",
   "no_image_loaded": "Kein Bild geladen",
   "select_area_first": "Bitte zuerst einen Bereich auswählen",
+  "apply_mosaic_failed": "Mosaik-Anwendung fehlgeschlagen",
+  "mosaic_applied": "Mosaik angewendet",
   "image_saved": "Bild gespeichert",
   "save_failed": "Speichern fehlgeschlagen",
   "load_failed": "Laden fehlgeschlagen",
@@ -32,5 +35,6 @@
   "view": "Ansicht",
   "tools": "Werkzeuge",
   "window": "Fenster",
-  "ready": "Bereit"
+  "ready": "Bereit",
+  "image_saved_successfully": "Bild erfolgreich gespeichert"
 }

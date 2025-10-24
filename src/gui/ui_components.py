@@ -23,6 +23,7 @@ class ControlPanel(QWidget):
     undo_clicked = Signal()
     redo_clicked = Signal()
     clear_clicked = Signal()
+    apply_mosaic_clicked = Signal()
     block_size_changed = Signal(int)
     intensity_changed = Signal(int)
     
@@ -77,6 +78,12 @@ class ControlPanel(QWidget):
         """创建编辑操作组"""
         group = QGroupBox(tr("edit", "Edit"))
         layout = QVBoxLayout()
+        
+        # 应用马赛克按钮
+        self.apply_mosaic_btn = QPushButton(tr("apply_mosaic", "Apply Mosaic"))
+        self.apply_mosaic_btn.clicked.connect(self.apply_mosaic_clicked.emit)
+        self.apply_mosaic_btn.setEnabled(False)
+        layout.addWidget(self.apply_mosaic_btn)
         
         # 撤销按钮
         self.undo_btn = QPushButton(tr("undo", "Undo"))
@@ -155,12 +162,13 @@ class ControlPanel(QWidget):
         self.intensity_spin.setValue(value)
         self.intensity_changed.emit(value)
     
-    def update_button_states(self, has_image=False, can_undo=False, can_redo=False):
+    def update_button_states(self, has_image=False, can_undo=False, can_redo=False, has_selection=False):
         """更新按钮状态"""
         self.save_btn.setEnabled(has_image)
         self.undo_btn.setEnabled(can_undo)
         self.redo_btn.setEnabled(can_redo)
         self.clear_btn.setEnabled(has_image)
+        self.apply_mosaic_btn.setEnabled(has_image and has_selection)
     
     def get_block_size(self):
         """获取块大小"""

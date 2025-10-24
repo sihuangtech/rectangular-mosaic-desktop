@@ -107,15 +107,22 @@ class MainWindow(QMainWindow):
         
         # 连接UIStateManager的信号到各个组件
         self.ui_state_manager.image_state_changed.connect(self.control_panel.update_button_states)
-        self.ui_state_manager.image_state_changed.connect(self.menu_bar.update_menu_states)
+        self.ui_state_manager.image_state_changed.connect(lambda has_image: 
+            self.menu_bar.update_menu_states(has_image, False, False, False))
         self.ui_state_manager.image_state_changed.connect(self.status_bar.update_status)
-        
+
         self.ui_state_manager.history_state_changed.connect(lambda can_undo, can_redo: 
             self.control_panel.update_button_states(self.ui_state_manager.get_image_state(), can_undo, can_redo))
         self.ui_state_manager.history_state_changed.connect(lambda can_undo, can_redo:
-            self.menu_bar.update_menu_states(self.ui_state_manager.get_image_state(), can_undo, can_redo))
+            self.menu_bar.update_menu_states(self.ui_state_manager.get_image_state(), can_undo, can_redo, self.ui_state_manager.get_selection_state()))
         self.ui_state_manager.history_state_changed.connect(lambda can_undo, can_redo:
             self.status_bar.update_status(self.ui_state_manager.get_image_state(), can_undo, can_redo))
+
+        self.ui_state_manager.selection_state_changed.connect(lambda has_selection:
+            self.menu_bar.update_menu_states(self.ui_state_manager.get_image_state(), 
+                                           self.ui_state_manager.get_history_state()[0], 
+                                           self.ui_state_manager.get_history_state()[1], 
+                                           has_selection))
         
         # 连接控制面板的用户操作到业务逻辑
         self.control_panel.open_image_clicked.connect(self.handle_open_image)
@@ -123,6 +130,7 @@ class MainWindow(QMainWindow):
         self.control_panel.undo_clicked.connect(self.handle_undo)
         self.control_panel.redo_clicked.connect(self.handle_redo)
         self.control_panel.clear_clicked.connect(self.handle_clear_selection)
+        self.control_panel.apply_mosaic_clicked.connect(self.handle_apply_mosaic)
         self.control_panel.block_size_changed.connect(self.ui_state_manager.set_block_size)
         self.control_panel.intensity_changed.connect(self.ui_state_manager.set_intensity)
         
@@ -132,9 +140,13 @@ class MainWindow(QMainWindow):
         self.menu_bar.undo_triggered.connect(self.handle_undo)
         self.menu_bar.redo_triggered.connect(self.handle_redo)
         self.menu_bar.clear_triggered.connect(self.handle_clear_selection)
+        self.menu_bar.apply_mosaic_triggered.connect(self.handle_apply_mosaic)
         self.menu_bar.language_changed.connect(self.handle_language_change)
         self.menu_bar.about_triggered.connect(self.show_about)
         self.menu_bar.exit_triggered.connect(self.close)
+        
+        # 连接文件管理器的信号
+        self.file_manager.image_opened.connect(self.on_image_opened)
         
         # 连接图像查看器的信号
         self.image_viewer.selection_made.connect(self.handle_selection_made)
@@ -159,10 +171,18 @@ class MainWindow(QMainWindow):
     def handle_open_image(self):
         """处理打开图像 - 使用FileManager"""
         self.file_manager.open_image_file()
+    
+    def on_image_opened(self, image, file_path):
+        """处理图像打开完成 - 加载到图像查看器"""
+        self.image_viewer.load_image(file_path)
         
     def handle_save_image(self):
         """处理保存图像 - 使用FileManager"""
-        self.file_manager.save_image_file()
+        current_image = self.image_viewer.get_current_image()
+        if current_image:
+            self.file_manager.save_image_file(current_image, self)
+        else:
+            QMessageBox.warning(self, tr("warning"), tr("no_image_to_save"))
         
     def handle_undo(self):
         """处理撤销 - 使用EditHistory"""
@@ -175,6 +195,39 @@ class MainWindow(QMainWindow):
     def handle_clear_selection(self):
         """处理清除选择 - 使用ImageViewer"""
         self.image_viewer.clear_selection()
+    
+    def handle_apply_mosaic(self):
+        """处理应用马赛克 - 使用ImageMosaic功能"""
+        if not self.image_viewer.has_image():
+            QMessageBox.warning(self, tr("warning"), tr("no_image_loaded"))
+            return
+        
+        selection_rect = self.image_viewer.get_selection_rect()
+        if not selection_rect or not selection_rect.isValid():
+            QMessageBox.warning(self, tr("warning"), tr("select_area_first"))
+            return
+        
+        try:
+            from src.features.image_mosaic import apply_mosaic
+            current_image = self.image_viewer.get_current_image()
+            block_size = self.control_panel.get_block_size()
+            
+            # 应用马赛克
+            processed_image = apply_mosaic(current_image, selection_rect, block_size)
+            
+            # 更新显示
+            self.image_viewer.update_image(processed_image)
+            
+            # 添加到历史记录
+            self.history.add_state(processed_image.copy())
+            
+            # 清除选择
+            self.image_viewer.clear_selection()
+            
+            self.status_bar.show_message(tr("mosaic_applied"))
+            
+        except Exception as e:
+            QMessageBox.critical(self, tr("error"), f"{tr('apply_mosaic_failed')}: {str(e)}")
     
     def on_block_size_changed(self, value):
         """块大小改变处理"""
@@ -189,11 +242,24 @@ class MainWindow(QMainWindow):
     def handle_selection_made(self, rect):
         """处理选择区域 - 使用UIStateManager和ImageViewer"""
         self.ui_state_manager.set_selection_state(True)
-        # 应用马赛克逻辑在ImageViewer中处理
+        # 更新应用马赛克按钮状态
+        self.control_panel.update_button_states(
+            has_image=self.image_viewer.has_image(),
+            can_undo=self.history.can_undo(),
+            can_redo=self.history.can_redo(),
+            has_selection=rect.isValid() if rect else False
+        )
         
     def handle_image_loaded(self, image_path):
         """处理图像加载 - 使用UIStateManager"""
         self.ui_state_manager.set_image_state(True)
+        # 重置选择状态
+        self.control_panel.update_button_states(
+            has_image=True,
+            can_undo=self.history.can_undo(),
+            can_redo=self.history.can_redo(),
+            has_selection=False
+        )
     
     def change_language(self, language_code):
         """切换语言 - 使用Translator类"""

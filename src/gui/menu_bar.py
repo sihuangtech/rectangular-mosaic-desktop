@@ -17,6 +17,7 @@ class AppMenuBar(QMenuBar):
     undo_triggered = Signal()
     redo_triggered = Signal()
     clear_triggered = Signal()
+    apply_mosaic_triggered = Signal()
     language_changed = Signal(str)
     about_triggered = Signal()
     exit_triggered = Signal()
@@ -74,6 +75,13 @@ class AppMenuBar(QMenuBar):
         """创建编辑菜单"""
         edit_menu = self.addMenu(tr("edit", "Edit"))
         
+        # 应用马赛克
+        apply_mosaic_action = QAction(tr("apply_mosaic", "Apply Mosaic"), self)
+        apply_mosaic_action.triggered.connect(self.apply_mosaic_triggered.emit)
+        edit_menu.addAction(apply_mosaic_action)
+        
+        edit_menu.addSeparator()
+        
         # 撤销
         undo_action = QAction(tr("undo", "Undo"), self)
         undo_action.setShortcut(QKeySequence.Undo)
@@ -97,6 +105,7 @@ class AppMenuBar(QMenuBar):
         self.undo_action = undo_action
         self.redo_action = redo_action
         self.clear_action = clear_action
+        self.apply_mosaic_action = apply_mosaic_action
     
     def create_view_menu(self):
         """创建视图菜单"""
@@ -132,13 +141,14 @@ class AppMenuBar(QMenuBar):
         
         self.help_menu = help_menu
     
-    def update_menu_states(self, has_image=False, can_undo=False, can_redo=False):
+    def update_menu_states(self, has_image=False, can_undo=False, can_redo=False, has_selection=False):
         """更新菜单项状态"""
         self.open_action.setEnabled(True)  # 总是可以打开
         self.save_action.setEnabled(has_image)
         self.undo_action.setEnabled(can_undo)
         self.redo_action.setEnabled(can_redo)
         self.clear_action.setEnabled(has_image)
+        self.apply_mosaic_action.setEnabled(has_image and has_selection)
     
     def populate_language_menu(self, languages, current_language):
         """填充语言菜单"""

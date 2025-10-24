@@ -17,11 +17,12 @@ class Translator:
     """翻译器类，管理应用程序的多语言支持"""
     
     def __init__(self):
-        self.current_language = 'en-US'  # 默认语言
         self.translations = {}
         self.qt_translator = QTranslator()
         self.translations_dir = Path(__file__).parent / 'translations'
         self.load_translations()
+        # 根据系统语言设置默认语言
+        self.current_language = self.get_system_language()
     
     def load_translations(self):
         """从JSON文件加载翻译数据"""
@@ -82,20 +83,134 @@ class Translator:
     def get_available_languages(self):
         """获取可用的语言列表，返回排序后的语言代码列表"""
         return sorted(list(self.translations.keys()))
+    
+    def get_system_language(self):
+        """获取系统语言，如果系统语言不在支持列表中则返回英文"""
+        import platform
+        system = platform.system()
+        
+        if system == 'Darwin':  # macOS
+            return self._get_macos_language()
+        elif system == 'Windows':
+            return self._get_windows_language()
+        else:  # Linux或其他系统
+            return self._get_linux_language()
+    
+    def _get_macos_language(self):
+        """获取macOS系统语言"""
+        try:
+            import subprocess
+            result = subprocess.run(['defaults', 'read', '-g', 'AppleLanguages'], 
+                                  capture_output=True, text=True, timeout=5)
+            if result.returncode == 0 and result.stdout:
+                import re
+                lang_match = re.search(r'"([^"]+)"', result.stdout)
+                if lang_match:
+                    apple_lang = lang_match.group(1)
+                    # 转换Apple语言格式到我们的格式
+                    if 'zh' in apple_lang:
+                        return 'zh-CN'
+                    elif 'ja' in apple_lang:
+                        return 'ja-JP'
+                    elif 'ko' in apple_lang:
+                        return 'ko-KR'
+                    elif 'fr' in apple_lang:
+                        return 'fr-FR'
+                    elif 'de' in apple_lang:
+                        return 'de-DE'
+                    elif 'es' in apple_lang:
+                        return 'es-ES'
+                    elif 'ru' in apple_lang:
+                        return 'ru-RU'
+        except Exception:
+            pass
+        return 'en-US'
+    
+    def _get_windows_language(self):
+        """获取Windows系统语言"""
+        try:
+            import subprocess
+            # 使用PowerShell获取系统UI语言
+            result = subprocess.run([
+                'powershell', '-Command', 
+                'Get-WinSystemLocale | Select-Object -ExpandProperty Name'
+            ], capture_output=True, text=True, timeout=5)
+            
+            if result.returncode == 0 and result.stdout.strip():
+                win_lang = result.stdout.strip()
+                # Windows语言格式映射
+                lang_map = {
+                    'zh-CN': 'zh-CN', 'zh-Hans-CN': 'zh-CN',
+                    'ja-JP': 'ja-JP', 'ko-KR': 'ko-KR',
+                    'fr-FR': 'fr-FR', 'de-DE': 'de-DE',
+                    'es-ES': 'es-ES', 'ru-RU': 'ru-RU',
+                    'en-US': 'en-US', 'en-GB': 'en-US'
+                }
+                if win_lang in lang_map:
+                    return lang_map[win_lang]
+                
+                # 如果完整匹配失败，尝试简写匹配
+                lang_prefix = win_lang.split('-')[0]
+                if lang_prefix == 'zh':
+                    return 'zh-CN'
+                elif lang_prefix == 'ja':
+                    return 'ja-JP'
+                elif lang_prefix == 'ko':
+                    return 'ko-KR'
+                elif lang_prefix == 'fr':
+                    return 'fr-FR'
+                elif lang_prefix == 'de':
+                    return 'de-DE'
+                elif lang_prefix == 'es':
+                    return 'es-ES'
+                elif lang_prefix == 'ru':
+                    return 'ru-RU'
+        except (subprocess.TimeoutExpired, FileNotFoundError):
+            pass
+        return 'en-US'
+    
+    def _get_linux_language(self):
+        """获取Linux系统语言"""
+        try:
+            import subprocess
+            result = subprocess.run(['locale'], capture_output=True, text=True, timeout=5)
+            if result.returncode == 0 and result.stdout:
+                for line in result.stdout.split('\n'):
+                    if line.startswith('LANG='):
+                        lang = line.split('=')[1].strip().replace('"', '')
+                        lang_prefix = lang.split('_')[0]
+                        if lang_prefix == 'zh':
+                            return 'zh-CN'
+                        elif lang_prefix == 'ja':
+                            return 'ja-JP'
+                        elif lang_prefix == 'ko':
+                            return 'ko-KR'
+                        elif lang_prefix == 'fr':
+                            return 'fr-FR'
+                        elif lang_prefix == 'de':
+                            return 'de-DE'
+                        elif lang_prefix == 'es':
+                            return 'es-ES'
+                        elif lang_prefix == 'ru':
+                            return 'ru-RU'
+                        break
+        except Exception:
+            pass
+        return 'en-US'
 
 # 全局翻译器实例
 translator = Translator()
 
 # 语言配置常量
 LANGUAGES = {
-    'zh_CN': {'name': '中文', 'english_name': 'Chinese', 'flag': '🇨🇳'},
-    'en_US': {'name': 'English', 'english_name': 'English', 'flag': '🇺🇸'},
-    'ja_JP': {'name': '日本語', 'english_name': 'Japanese', 'flag': '🇯🇵'},
-    'ko_KR': {'name': '한국어', 'english_name': 'Korean', 'flag': '🇰🇷'},
-    'fr_FR': {'name': 'Français', 'english_name': 'French', 'flag': '🇫🇷'},
-    'de_DE': {'name': 'Deutsch', 'english_name': 'German', 'flag': '🇩🇪'},
-    'es_ES': {'name': 'Español', 'english_name': 'Spanish', 'flag': '🇪🇸'},
-    'ru_RU': {'name': 'Русский', 'english_name': 'Russian', 'flag': '🇷🇺'}
+    'zh-CN': {'name': '中文', 'english_name': 'Chinese', 'flag': '🇨🇳'},
+    'en-US': {'name': 'English', 'english_name': 'English', 'flag': '🇺🇸'},
+    'ja-JP': {'name': '日本語', 'english_name': 'Japanese', 'flag': '🇯🇵'},
+    'ko-KR': {'name': '한국어', 'english_name': 'Korean', 'flag': '🇰🇷'},
+    'fr-FR': {'name': 'Français', 'english_name': 'French', 'flag': '🇫🇷'},
+    'de-DE': {'name': 'Deutsch', 'english_name': 'German', 'flag': '🇩🇪'},
+    'es-ES': {'name': 'Español', 'english_name': 'Spanish', 'flag': '🇪🇸'},
+    'ru-RU': {'name': 'Русский', 'english_name': 'Russian', 'flag': '🇷🇺'}
 }
 
 def tr(key, default=None):

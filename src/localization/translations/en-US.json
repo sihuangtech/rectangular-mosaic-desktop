@@ -1,11 +1,12 @@
 {
-  "app_name": "Rectangular Mosaic Tool",
+  "app_name": "Rectangular Mosaic",
   "organization_name": "Rectangular Mosaic Desktop",
   "open_image": "Open Image",
   "save_image": "Save Image",
   "undo": "Undo",
   "redo": "Redo",
   "clear": "Clear",
+  "apply_mosaic": "Apply Mosaic",
   "block_size": "Block Size",
   "intensity": "Intensity",
   "image_files": "Image Files",
@@ -17,6 +18,8 @@
   "success": "Success",
   "no_image_loaded": "No image loaded",
   "select_area_first": "Please select area first",
+  "apply_mosaic_failed": "Apply mosaic failed",
+  "mosaic_applied": "Mosaic applied",
   "image_saved": "Image saved",
   "save_failed": "Save failed",
   "load_failed": "Load failed",
@@ -32,5 +35,7 @@
   "view": "View",
   "tools": "Tools",
   "window": "Window",
-  "ready": "Ready"
+  "ready": "Ready",
+  "no_image_to_save": "No image to save",
+  "image_saved_successfully": "Image saved successfully"
 }

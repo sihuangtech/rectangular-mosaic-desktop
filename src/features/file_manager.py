@@ -84,6 +84,11 @@ class FileManager(QObject):
             # 使用统一的save_image函数
             if save_image(image, file_path):
                 self.current_file_path = file_path
+                QMessageBox.information(
+                    parent_widget,
+                    tr("success", "Success"),
+                    tr("image_saved_successfully", "Image saved successfully")
+                )
                 return True
             else:
                 QMessageBox.critical(
@@ -104,3 +109,17 @@ class FileManager(QObject):
     def get_current_file_path(self):
         """获取当前文件完整路径"""
         return self.current_file_path
+    
+    def is_valid_image_file(self, file_path):
+        """
+        检查文件是否为有效的图像文件
+        Args:
+            file_path (str): 文件路径
+        Returns:
+            bool: 是否为有效的图像文件
+        """
+        if not file_path or not os.path.exists(file_path):
+            return False
+        
+        file_ext = os.path.splitext(file_path)[1].lower()
+        return file_ext in self.valid_extensions

@@ -90,7 +90,7 @@ README.md              # Project documentation
 
 1. After starting the program, click "Upload Image" to select a local image.
 2. Drag the mouse on the image to select the area that needs mosaic processing.
-3. Click the "Area Mosaic" button to apply mosaic processing to the selected area.
+3. Click the "Apply Mosaic" button to apply mosaic processing to the selected area.
 4. To save the processed image, click the "Save Image" button.
 
 ## Development Standards

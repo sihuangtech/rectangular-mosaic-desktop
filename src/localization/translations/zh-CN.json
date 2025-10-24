@@ -1,11 +1,12 @@
 {
-  "app_name": "矩形马赛克工具",
+  "app_name": "矩形马赛克",
   "organization_name": "矩形马赛克桌面",
   "open_image": "打开图片",
   "save_image": "保存图片",
   "undo": "撤销",
   "redo": "重做",
   "clear": "清除",
+  "apply_mosaic": "应用马赛克",
   "block_size": "块大小",
   "intensity": "强度",
   "image_files": "图片文件",
@@ -17,6 +18,8 @@
   "success": "成功",
   "no_image_loaded": "没有加载图片",
   "select_area_first": "请先选择区域",
+  "apply_mosaic_failed": "应用马赛克失败",
+  "mosaic_applied": "马赛克已应用",
   "image_saved": "图片已保存",
   "save_failed": "保存失败",
   "load_failed": "加载失败",
@@ -32,5 +35,7 @@
   "view": "视图",
   "tools": "工具",
   "window": "窗口",
-  "ready": "就绪"
+  "ready": "就绪",
+  "no_image_to_save": "没有图片可保存",
+  "image_saved_successfully": "图片保存成功"
 }

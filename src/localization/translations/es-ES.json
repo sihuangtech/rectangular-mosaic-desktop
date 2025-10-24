@@ -1,11 +1,12 @@
 {
-  "app_name": "Herramienta de Mosaico Rectangular",
+  "app_name": "Mosaico Rectangular",
   "organization_name": "Mosaico Rectangular Desktop",
   "open_image": "Abrir Imagen",
   "save_image": "Guardar Imagen",
   "undo": "Deshacer",
   "redo": "Rehacer",
   "clear": "Limpiar",
+  "apply_mosaic": "Aplicar Mosaico",
   "block_size": "Tamaño de Bloque",
   "intensity": "Intensidad",
   "image_files": "Archivos de Imagen",
@@ -16,7 +17,9 @@
   "warning": "Advertencia",
   "success": "Éxito",
   "no_image_loaded": "No se ha cargado imagen",
-  "select_area_first": "Por favor selecciona un área primero",
+  "select_area_first": "Por favor seleccione el área primero",
+  "apply_mosaic_failed": "Falló la aplicación de mosaico",
+  "mosaic_applied": "Mosaico aplicado",
   "image_saved": "Imagen guardada",
   "save_failed": "Error al guardar",
   "load_failed": "Error al cargar",
@@ -32,5 +35,6 @@
   "view": "Ver",
   "tools": "Herramientas",
   "window": "Ventana",
-  "ready": "Listo"
+  "ready": "Listo",
+  "image_saved_successfully": "Imagen guardada exitosamente"
 }

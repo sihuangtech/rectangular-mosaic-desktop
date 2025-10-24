@@ -1,11 +1,12 @@
 {
-  "app_name": "長方形モザイクツール",
+  "app_name": "矩形モザイク",
   "organization_name": "長方形モザイクデスクトップ",
   "open_image": "画像を開く",
   "save_image": "画像を保存",
   "undo": "元に戻す",
   "redo": "やり直し",
   "clear": "クリア",
+  "apply_mosaic": "モザイクを適用",
   "block_size": "ブロックサイズ",
   "intensity": "強度",
   "image_files": "画像ファイル",
@@ -17,6 +18,8 @@
   "success": "成功",
   "no_image_loaded": "画像が読み込まれていません",
   "select_area_first": "先に領域を選択してください",
+  "apply_mosaic_failed": "モザイク適用に失敗しました",
+  "mosaic_applied": "モザイクが適用されました",
   "image_saved": "画像が保存されました",
   "save_failed": "保存に失敗しました",
   "load_failed": "読み込みに失敗しました",
@@ -32,5 +35,6 @@
   "view": "表示",
   "tools": "ツール",
   "window": "ウィンドウ",
-  "ready": "準備完了"
+  "ready": "準備完了",
+  "image_saved_successfully": "画像が正常に保存されました"
 }
