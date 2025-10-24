@@ -44,7 +44,7 @@
   "theme_system": "Follow System",
   "theme_light": "Light",
   "theme_dark": "Dark",
-  "about_text": "Rectangular Mosaic Desktop v{}\n\nA simple and easy-to-use image mosaic processing tool.\n\nMain Features:\n• Support common image formats (PNG, JPEG, etc.)\n• Rectangular area selection and mosaic processing\n• Adjustable mosaic block size\n• Undo/Redo functionality\n• Multi-language support\n• Theme switching (Light/Dark)\n• Cross-platform support (Windows/macOS/Linux)",
+  "version": "Version",
   "ok": "OK",
   "cancel": "Cancel"
 }

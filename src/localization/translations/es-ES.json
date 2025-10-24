@@ -42,5 +42,6 @@
   "select_theme": "Seleccionar tema:",
   "theme_system": "Seguir Sistema",
   "theme_light": "Claro",
-  "theme_dark": "Oscuro"
+  "theme_dark": "Oscuro",
+  "version": "Versión"
 }

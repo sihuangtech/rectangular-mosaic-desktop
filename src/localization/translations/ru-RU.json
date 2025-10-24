@@ -42,5 +42,6 @@
   "select_theme": "Выберите тему:",
   "theme_system": "Следовать Системе",
   "theme_light": "Светлая",
-  "theme_dark": "Темная"
+  "theme_dark": "Темная",
+  "version": "Версия"
 }
