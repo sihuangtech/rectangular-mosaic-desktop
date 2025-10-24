@@ -11,6 +11,7 @@ SelectableLabel 模块
 from PySide6.QtWidgets import QLabel
 from PySide6.QtGui import QPainter, QPen, QColor
 from PySide6.QtCore import Qt, QRect
+from src.constants.config import SELECTION_BORDER_COLOR, SELECTION_BORDER_WIDTH
 
 class SelectableLabel(QLabel):
     """
@@ -46,7 +47,7 @@ class SelectableLabel(QLabel):
         if self.selection_rect and not self.selection_rect.isNull():
             painter = QPainter(self)
             pen_style = Qt.DashLine if self.is_selecting else Qt.SolidLine
-            pen = QPen(QColor(255, 0, 0), 2, pen_style)
+            pen = QPen(QColor(*SELECTION_BORDER_COLOR), SELECTION_BORDER_WIDTH, pen_style)
             painter.setPen(pen)
             painter.drawRect(self.selection_rect)
-            painter.end() 
+            painter.end()
