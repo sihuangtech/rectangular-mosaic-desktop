@@ -58,13 +58,13 @@ This will guide you through:
 For onedir build (generates folder with multiple files):
 
 ```bash
-pyinstaller --onedir --name "RectangularMosaic" --add-data "assets;assets" --icon="assets/icon.ico" --noconsole main.py
+pyinstaller --onedir --name "RectangularMosaic" --add-data "assets;assets" --add-data "src/localization/translations;src/localization/translations" --icon="assets/icon.ico" --noconsole main.py
 ```
 
 For onefile build (generates single executable):
 
 ```bash
-pyinstaller --onefile --name "RectangularMosaic" --add-data "assets;assets" --icon="assets/icon.ico" --noconsole main.py
+pyinstaller --onefile --name "RectangularMosaic" --add-data "assets;assets" --add-data "src/localization/translations;src/localization/translations" --icon="assets/icon.ico" --noconsole main.py
 ```
 
 The built executable will be in the `dist/` directory.

@@ -8,6 +8,7 @@ from PySide6.QtGui import QPixmap
 from src.localization import tr
 from src.constants.config import APP_VERSION, APP_BUILD_NUMBER, ORGANIZATION_NAME, APP_NAME
 import os
+import sys
 
 
 class AboutDialog(QDialog):
@@ -23,38 +24,12 @@ class AboutDialog(QDialog):
         self.setWindowTitle("")  # macOS标准关于窗口通常没有标题
         self.setModal(True)
         
-        # 主布局 - 水平布局：图标在左，内容在右
-        main_layout = QHBoxLayout(self)
-        main_layout.setSpacing(20)  # 图标和内容之间的间距
+        # 主布局 - 垂直布局：仅显示内容
+        main_layout = QVBoxLayout(self)
+        main_layout.setSpacing(12)  # 内容项之间的间距
         main_layout.setContentsMargins(30, 20, 30, 20)  # macOS风格边距
         
-        # 左侧 - 应用图标
-        icon_label = QLabel()
-        icon_label.setFixedSize(64, 64)
-        
-        # 尝试加载应用图标
-        icon_paths = [
-            os.path.join('assets', 'icon.png'),
-            os.path.join('assets', 'icon.ico'),
-            ':/icons/app-icon'  # Qt资源路径
-        ]
-        
-        icon_loaded = False
-        for icon_path in icon_paths:
-            if os.path.exists(icon_path):
-                pixmap = QPixmap(icon_path)
-                if not pixmap.isNull():
-                    icon_label.setPixmap(pixmap.scaled(64, 64, Qt.KeepAspectRatio, Qt.SmoothTransformation))
-                    icon_loaded = True
-                    break
-        
-        if not icon_loaded:
-            icon_label.setText("📷")
-            icon_label.setStyleSheet("font-size: 48px; color: #666;")
-        
-        main_layout.addWidget(icon_label, 0, Qt.AlignTop)  # 图标顶部对齐
-        
-        # 右侧 - 内容区域
+        # 内容区域
         content_layout = QVBoxLayout()
         content_layout.setSpacing(4)  # 内容项之间的紧凑间距
         
@@ -75,30 +50,62 @@ class AboutDialog(QDialog):
         """)
         content_layout.addWidget(version_label)
         
-        # 超链接区域 - 横向排列
-        links_layout = QHBoxLayout()
-        links_layout.setSpacing(8)  # 链接之间的间距
+        # 超链接区域 - 分两行排列
+        # 第一行：主要链接
+        main_links_layout = QHBoxLayout()
+        main_links_layout.setSpacing(8)  # 链接之间的间距
         
         # Website链接
         website_label = QLabel('<a href="https://www.sihuangtech.com">Website</a>')
         website_label.setOpenExternalLinks(True)
         website_label.setStyleSheet("font-size: 11px; color: #0066cc; text-decoration: none;")
-        links_layout.addWidget(website_label)
+        main_links_layout.addWidget(website_label)
         
         # Email链接
         email_label = QLabel('<a href="mailto:developer@skstudio.cn">Email</a>')
         email_label.setOpenExternalLinks(True)
         email_label.setStyleSheet("font-size: 11px; color: #0066cc; text-decoration: none;")
-        links_layout.addWidget(email_label)
+        main_links_layout.addWidget(email_label)
         
         # GitHub链接
         github_label = QLabel('<a href="https://github.com/sihuangtech">GitHub</a>')
         github_label.setOpenExternalLinks(True)
         github_label.setStyleSheet("font-size: 11px; color: #0066cc; text-decoration: none;")
-        links_layout.addWidget(github_label)
+        main_links_layout.addWidget(github_label)
         
-        links_layout.addStretch()  # 右侧填充
-        content_layout.addLayout(links_layout)
+        main_links_layout.addStretch()  # 右侧填充
+        content_layout.addLayout(main_links_layout)
+        
+        # 第二行：社交媒体链接
+        social_links_layout = QHBoxLayout()
+        social_links_layout.setSpacing(8)  # 链接之间的间距
+        
+        # 微博链接
+        weibo_label = QLabel('<a href="https://www.weibo.com/u/7973019346">新浪微博</a>')
+        weibo_label.setOpenExternalLinks(True)
+        weibo_label.setStyleSheet("font-size: 11px; color: #0066cc; text-decoration: none;")
+        social_links_layout.addWidget(weibo_label)
+        
+        # 哔哩哔哩链接
+        bilibili_label = QLabel('<a href="https://space.bilibili.com/3461571323889732">哔哩哔哩</a>')
+        bilibili_label.setOpenExternalLinks(True)
+        bilibili_label.setStyleSheet("font-size: 11px; color: #0066cc; text-decoration: none;")
+        social_links_layout.addWidget(bilibili_label)
+        
+        # X (Twitter)链接
+        x_label = QLabel('<a href="https://x.com/SnakeKongStudio">X (Twitter)</a>')
+        x_label.setOpenExternalLinks(True)
+        x_label.setStyleSheet("font-size: 11px; color: #0066cc; text-decoration: none;")
+        social_links_layout.addWidget(x_label)
+        
+        # YouTube链接
+        youtube_label = QLabel('<a href="https://www.youtube.com/@SnakeKonginchristStudio">YouTube</a>')
+        youtube_label.setOpenExternalLinks(True)
+        youtube_label.setStyleSheet("font-size: 11px; color: #0066cc; text-decoration: none;")
+        social_links_layout.addWidget(youtube_label)
+        
+        social_links_layout.addStretch()  # 右侧填充
+        content_layout.addLayout(social_links_layout)
         
         # 版权信息 - macOS风格
         copyright_label = QLabel(f'Copyright © 2025 {ORGANIZATION_NAME}')
@@ -118,12 +125,10 @@ class AboutDialog(QDialog):
         # 将内容区域添加到主布局
         main_layout.addLayout(content_layout)
     
-
-
     def set_fixed_size(self):
         """设置固定大小 (macOS风格尺寸)"""
-        self.setFixedSize(280, 200)  # 简化布局后的尺寸
-        self.setMaximumSize(280, 200)
+        self.setFixedSize(280, 240)  # 增加高度以容纳两行链接
+        self.setMaximumSize(280, 240)
     
     def showEvent(self, event):
         """显示事件 - 居中对话框"""

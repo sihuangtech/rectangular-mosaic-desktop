@@ -58,13 +58,13 @@ python build.py
 构建 onedir 版本（生成包含多个文件的文件夹）：
 
 ```bash
-pyinstaller --onedir --name "RectangularMosaic" --add-data "assets;assets" --icon="assets/icon.ico" --noconsole main.py
+pyinstaller --onedir --name "RectangularMosaic" --add-data "assets;assets" --add-data "src/localization/translations;src/localization/translations" --icon="assets/icon.ico" --noconsole main.py
 ```
 
 构建 onefile 版本（生成单个可执行文件）：
 
 ```bash
-pyinstaller --onefile --name "RectangularMosaic" --add-data "assets;assets" --icon="assets/icon.ico" --noconsole main.py
+pyinstaller --onefile --name "RectangularMosaic" --add-data "assets;assets" --add-data "src/localization/translations;src/localization/translations" --icon="assets/icon.ico" --noconsole main.py
 ```
 
 构建完成后，可执行文件将在 `dist/` 目录中。

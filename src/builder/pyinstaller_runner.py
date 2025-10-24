@@ -42,6 +42,12 @@ class PyInstallerRunner:
             separator = self.config.platform_configs['separator']
             self.args += ['--add-data', f'{assets_dir}{separator}{assets_dir}']
         
+        # 自动集成翻译文件目录
+        translations_dir = 'src/localization/translations'
+        if os.path.exists(translations_dir):
+            separator = self.config.platform_configs['separator']
+            self.args += ['--add-data', f'{translations_dir}{separator}{translations_dir}']
+        
         # 设置应用名称（含架构后缀）
         final_name = self.config.get_final_app_name()
         self.args += ['--name', final_name]
