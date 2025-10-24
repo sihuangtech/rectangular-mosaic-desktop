@@ -100,8 +100,14 @@ class Translator:
         """获取macOS系统语言"""
         try:
             import subprocess
+            import os
+            # 添加CREATE_NO_WINDOW标志防止控制台弹出
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            startupinfo.wShowWindow = subprocess.SW_HIDE
+            
             result = subprocess.run(['defaults', 'read', '-g', 'AppleLanguages'], 
-                                  capture_output=True, text=True, timeout=5)
+                                  capture_output=True, text=True, timeout=5, startupinfo=startupinfo)
             if result.returncode == 0 and result.stdout:
                 import re
                 lang_match = re.search(r'"([^"]+)"', result.stdout)
@@ -130,11 +136,16 @@ class Translator:
         """获取Windows系统语言"""
         try:
             import subprocess
-            # 使用PowerShell获取系统UI语言
+            import os
+            # 使用PowerShell获取系统UI语言，添加CREATE_NO_WINDOW标志防止控制台弹出
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            startupinfo.wShowWindow = subprocess.SW_HIDE
+            
             result = subprocess.run([
                 'powershell', '-Command', 
                 'Get-WinSystemLocale | Select-Object -ExpandProperty Name'
-            ], capture_output=True, text=True, timeout=5)
+            ], capture_output=True, text=True, timeout=5, startupinfo=startupinfo)
             
             if result.returncode == 0 and result.stdout.strip():
                 win_lang = result.stdout.strip()
@@ -173,7 +184,13 @@ class Translator:
         """获取Linux系统语言"""
         try:
             import subprocess
-            result = subprocess.run(['locale'], capture_output=True, text=True, timeout=5)
+            import os
+            # 添加CREATE_NO_WINDOW标志防止控制台弹出
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            startupinfo.wShowWindow = subprocess.SW_HIDE
+            
+            result = subprocess.run(['locale'], capture_output=True, text=True, timeout=5, startupinfo=startupinfo)
             if result.returncode == 0 and result.stdout:
                 for line in result.stdout.split('\n'):
                     if line.startswith('LANG='):
