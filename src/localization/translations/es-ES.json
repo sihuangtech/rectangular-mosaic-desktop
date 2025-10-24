@@ -36,5 +36,11 @@
   "tools": "Herramientas",
   "window": "Ventana",
   "ready": "Listo",
-  "image_saved_successfully": "Imagen guardada exitosamente"
+  "image_saved_successfully": "Imagen guardada exitosamente",
+  "theme": "Tema",
+  "theme_settings": "Configuración de Tema",
+  "select_theme": "Seleccionar tema:",
+  "theme_system": "Seguir Sistema",
+  "theme_light": "Claro",
+  "theme_dark": "Oscuro"
 }

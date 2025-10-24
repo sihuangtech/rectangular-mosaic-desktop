@@ -37,5 +37,14 @@
   "window": "窗口",
   "ready": "就绪",
   "no_image_to_save": "没有图片可保存",
-  "image_saved_successfully": "图片保存成功"
+  "image_saved_successfully": "图片保存成功",
+  "theme": "主题",
+  "theme_settings": "主题设置",
+  "select_theme": "选择主题：",
+  "theme_system": "跟随系统",
+  "theme_light": "浅色",
+  "theme_dark": "深色",
+  "about_text": "矩形马赛克桌面应用 v{}\n\n一个简单易用的图像马赛克处理工具。\n\n主要功能：\n• 支持常见图片格式（PNG、JPEG等）\n• 矩形区域选择和马赛克处理\n• 可调节马赛克块大小\n• 撤销/重做功能\n• 多语言支持\n• 主题切换（浅色/深色）\n• 跨平台支持（Windows/macOS/Linux）",
+  "ok": "确定",
+  "cancel": "取消"
 }

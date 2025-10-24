@@ -36,5 +36,11 @@
   "tools": "Outils",
   "window": "Fenêtre",
   "ready": "Prêt",
-  "image_saved_successfully": "Image enregistrée avec succès"
+  "image_saved_successfully": "Image enregistrée avec succès",
+  "theme": "Thème",
+  "theme_settings": "Paramètres du Thème",
+  "select_theme": "Sélectionner le thème:",
+  "theme_system": "Suivre le Système",
+  "theme_light": "Clair",
+  "theme_dark": "Sombre"
 }

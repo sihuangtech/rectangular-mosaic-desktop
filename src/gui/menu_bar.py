@@ -2,10 +2,11 @@
 """
 菜单栏组件模块 - 包含应用程序的菜单栏
 """
-from PySide6.QtWidgets import QMenuBar, QMessageBox
+from PySide6.QtWidgets import QMenuBar, QMessageBox, QDialog, QVBoxLayout, QHBoxLayout, QRadioButton, QButtonGroup, QPushButton
 from PySide6.QtCore import Signal
-from PySide6.QtGui import QKeySequence, QAction
+from PySide6.QtGui import QKeySequence, QAction, QActionGroup
 from src.localization import tr
+from src.gui.theme_manager import get_theme_manager
 
 
 class AppMenuBar(QMenuBar):
@@ -21,6 +22,7 @@ class AppMenuBar(QMenuBar):
     language_changed = Signal(str)
     about_triggered = Signal()
     exit_triggered = Signal()
+    theme_settings_triggered = Signal()
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -34,11 +36,8 @@ class AppMenuBar(QMenuBar):
         # 编辑菜单
         self.create_edit_menu()
         
-        # 视图菜单
-        self.create_view_menu()
-        
-        # 工具菜单
-        self.create_tools_menu()
+        # 设置菜单
+        self.create_settings_menu()
         
         # 帮助菜单
         self.create_help_menu()
@@ -107,28 +106,20 @@ class AppMenuBar(QMenuBar):
         self.clear_action = clear_action
         self.apply_mosaic_action = apply_mosaic_action
     
-    def create_view_menu(self):
-        """创建视图菜单"""
-        view_menu = self.addMenu(tr("view", "View"))
+    def create_settings_menu(self):
+        """创建设置菜单"""
+        settings_menu = self.addMenu(tr("settings", "Settings"))
         
-        # 这里可以添加视图相关的菜单项
-        # 例如：缩放、全屏等
-        
-        self.view_menu = view_menu
-    
-    def create_tools_menu(self):
-        """创建工具菜单"""
-        tools_menu = self.addMenu(tr("tools", "Tools"))
+        # 添加主题选项
+        theme_action = QAction(tr("theme", "Theme"), self)
+        theme_action.triggered.connect(self.show_theme_settings)
+        settings_menu.addAction(theme_action)
         
         # 语言子菜单
-        language_menu = tools_menu.addMenu(tr("language", "Language"))
+        language_menu = settings_menu.addMenu(tr("language", "Language"))
         self.language_menu = language_menu
         
-        # 设置子菜单
-        settings_menu = tools_menu.addMenu(tr("settings", "Settings"))
         self.settings_menu = settings_menu
-        
-        self.tools_menu = tools_menu
     
     def create_help_menu(self):
         """创建帮助菜单"""
@@ -154,10 +145,98 @@ class AppMenuBar(QMenuBar):
         """填充语言菜单"""
         self.language_menu.clear()
         
+        # 创建动作组以实现单选
+        language_group = QActionGroup(self)
+        language_group.setExclusive(True)
+        
         for lang_code in languages:
-            action = QAction(lang_code, self)
+            # 获取语言的本地化名称
+            from src.localization import LANGUAGES
+            lang_info = LANGUAGES.get(lang_code, {})
+            lang_name = lang_info.get('name', lang_code)  # 使用本地化名称，如果没有则使用代码
+            
+            action = QAction(lang_name, self)
             action.setCheckable(True)
             action.setChecked(lang_code == current_language)
             action.triggered.connect(lambda checked, code=lang_code: self.language_changed.emit(code))
+            
+            language_group.addAction(action)
             self.language_menu.addAction(action)
+    
+    def show_theme_settings(self):
+        """显示主题设置对话框"""
+        self.theme_settings_triggered.emit()
+
+
+class ThemeSettingsDialog(QDialog):
+    """主题设置对话框"""
+    
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.theme_manager = get_theme_manager()
+        self.init_ui()
+    
+    def init_ui(self):
+        """初始化UI"""
+        self.setWindowTitle(tr("theme_settings", "Theme Settings"))
+        self.setModal(True)
+        self.resize(300, 200)
+        
+        # 主布局
+        layout = QVBoxLayout(self)
+        
+        # 主题选项组
+        self.theme_group = QButtonGroup(self)
+        
+        available_themes = self.theme_manager.get_available_themes()
+        current_theme = self.theme_manager.get_current_theme()
+        
+        for theme_key, theme_name in available_themes.items():
+            radio = QRadioButton(theme_name)
+            radio.setChecked(theme_key == current_theme)
+            self.theme_group.addButton(radio, id=self.get_theme_id(theme_key))
+            layout.addWidget(radio)
+        
+        # 按钮布局
+        button_layout = QHBoxLayout()
+        button_layout.addStretch()
+        
+        # 确定按钮
+        ok_button = QPushButton(tr("ok", "OK"))
+        ok_button.clicked.connect(self.apply_theme)
+        button_layout.addWidget(ok_button)
+        
+        # 取消按钮
+        cancel_button = QPushButton(tr("cancel", "Cancel"))
+        cancel_button.clicked.connect(self.reject)
+        button_layout.addWidget(cancel_button)
+        
+        layout.addLayout(button_layout)
+    
+    def get_theme_id(self, theme_key):
+        """获取主题对应的ID"""
+        theme_ids = {
+            "system": 0,
+            "light": 1,
+            "dark": 2
+        }
+        return theme_ids.get(theme_key, 0)
+    
+    def get_theme_key_from_id(self, theme_id):
+        """根据ID获取主题键"""
+        theme_keys = ["system", "light", "dark"]
+        if 0 <= theme_id < len(theme_keys):
+            return theme_keys[theme_id]
+        return "system"
+    
+    def apply_theme(self):
+        """应用选择的主题"""
+        selected_id = self.theme_group.checkedId()
+        theme_key = self.get_theme_key_from_id(selected_id)
+        
+        if self.theme_manager.set_theme(theme_key):
+            self.accept()
+        else:
+            QMessageBox.warning(self, tr("error", "Error"), 
+                              tr("theme_apply_error", "Failed to apply theme"))
     

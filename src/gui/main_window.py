@@ -51,9 +51,20 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(MAIN_WINDOW_MIN_WIDTH, MAIN_WINDOW_MIN_HEIGHT)
         self.setAcceptDrops(True)
         
+        # 初始化主题管理器并应用主题
+        from src.gui.theme_manager import get_theme_manager
+        theme_manager = get_theme_manager()
+        theme_manager.apply_theme()
+        
         # 创建UI组件
         self.menu_bar = AppMenuBar(self)
         self.setMenuBar(self.menu_bar)
+        
+        # 初始化语言菜单
+        from src.localization import get_available_languages, get_current_language
+        languages = get_available_languages()
+        current_lang = get_current_language()
+        self.menu_bar.populate_language_menu(languages, current_lang)
         
         self.status_bar = AppStatusBar(self)
         self.setStatusBar(self.status_bar)
@@ -142,6 +153,7 @@ class MainWindow(QMainWindow):
         self.menu_bar.clear_triggered.connect(self.handle_clear_selection)
         self.menu_bar.apply_mosaic_triggered.connect(self.handle_apply_mosaic)
         self.menu_bar.language_changed.connect(self.handle_language_change)
+        self.menu_bar.theme_settings_triggered.connect(self.show_theme_settings)
         self.menu_bar.about_triggered.connect(self.show_about)
         self.menu_bar.exit_triggered.connect(self.close)
         
@@ -162,11 +174,39 @@ class MainWindow(QMainWindow):
     
     def show_about(self):
         """显示关于对话框"""
-        QMessageBox.about(
-            self,
-            tr('about'),
-            tr('about_text').format(APP_VERSION_DISPLAY)
-        )
+        from src.gui.about_dialog import show_about_dialog
+        show_about_dialog(self)
+    
+    def show_theme_settings(self):
+        """显示主题设置对话框"""
+        from src.gui.theme_manager import get_theme_manager
+        
+        theme_manager = get_theme_manager()
+        available_themes = theme_manager.get_available_themes()
+        current_theme = theme_manager.get_current_theme()
+        
+        # 创建简单的主题选择对话框
+        dialog = QMessageBox(self)
+        dialog.setWindowTitle(tr('theme_settings', 'Theme Settings'))
+        dialog.setText(tr('select_theme', 'Select theme:'))
+        
+        # 添加主题选项按钮
+        buttons = []
+        for theme_key, theme_name in available_themes.items():
+            button = dialog.addButton(theme_name, QMessageBox.AcceptRole)
+            buttons.append((button, theme_key))
+            if theme_key == current_theme:
+                dialog.setDefaultButton(button)
+        
+        dialog.addButton(QMessageBox.Cancel)
+        dialog.exec()
+        
+        # 获取选中的按钮
+        clicked_button = dialog.clickedButton()
+        for button, theme_key in buttons:
+            if clicked_button == button:
+                theme_manager.set_theme(theme_key)
+                break
     
     def handle_open_image(self):
         """处理打开图像 - 使用FileManager"""

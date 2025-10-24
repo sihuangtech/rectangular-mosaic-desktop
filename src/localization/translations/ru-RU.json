@@ -36,5 +36,11 @@
   "tools": "Инструменты",
   "window": "Окно",
   "ready": "Готово",
-  "image_saved_successfully": "Изображение успешно сохранено"
+  "image_saved_successfully": "Изображение успешно сохранено",
+  "theme": "Тема",
+  "theme_settings": "Настройки Темы",
+  "select_theme": "Выберите тему:",
+  "theme_system": "Следовать Системе",
+  "theme_light": "Светлая",
+  "theme_dark": "Темная"
 }
