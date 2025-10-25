@@ -7,6 +7,9 @@
 <div align="center">
   <img src="assets/icon.png" alt="矩形马赛克桌面版" width="128" height="128">
   <h3>矩形马赛克桌面版</h3>
+  <a href="https://apps.microsoft.com/detail/9p28pvb6jq79?referrer=appbadge&mode=direct" target="_blank">
+    <img src="https://get.microsoft.com/images/en-us%20dark.svg" alt="从 Microsoft Store 获取" width="200">
+  </a>
   <a href="https://apps.apple.com/us/app/rectangular-mosaic-desktop/id6754189038" target="_blank">
     <img src="https://developer.apple.com/app-store/marketing/guidelines/images/badge-download-on-the-mac-app-store.svg" alt="在 Mac App Store 下载">
   </a>
