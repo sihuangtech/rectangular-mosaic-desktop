@@ -7,12 +7,14 @@
 <div align="center">
   <img src="assets/icon.png" alt="Rectangular Mosaic Desktop" width="128" height="128">
   <h3>Rectangular Mosaic Desktop</h3>
-  <a href="https://apps.microsoft.com/detail/9p28pvb6jq79?referrer=appbadge&mode=direct" target="_blank">
-    <img src="https://get.microsoft.com/images/en-us%20dark.svg" alt="Get it from Microsoft Store" width="200">
-  </a>
-  <a href="https://apps.apple.com/us/app/rectangular-mosaic-desktop/id6754189038" target="_blank">
-    <img src="https://developer.apple.com/app-store/marketing/guidelines/images/badge-download-on-the-mac-app-store.svg" alt="Download on the Mac App Store">
-  </a>
+  <p style="display: flex; justify-content: center; align-items: flex-end; gap: 10px; flex-wrap: wrap;">
+    <a href="https://apps.microsoft.com/detail/9p28pvb6jq79?referrer=appbadge&mode=direct">
+      <img src="https://get.microsoft.com/images/en-us%20dark.svg" alt="Get it from Microsoft Store" height="50">
+    </a>
+    <a href="https://apps.apple.com/us/app/rectangular-mosaic-desktop/id6754189038">
+      <img src="https://developer.apple.com/app-store/marketing/guidelines/images/badge-download-on-the-mac-app-store.svg" alt="Download on the Mac App Store" height="50">
+    </a>
+  </p>
 </div>
 
 ## Project Overview
